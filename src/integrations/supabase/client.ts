@@ -8,28 +8,9 @@ const SUPABASE_PUBLISHABLE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiO
 // Import the supabase client like this:
 // import { supabase } from "@/integrations/supabase/client";
 
-// Safe storage wrapper for environments where localStorage may be blocked
-const getStorage = () => {
-  try {
-    if (typeof window !== 'undefined' && window.localStorage) {
-      // Test if localStorage is actually accessible
-      window.localStorage.getItem('test');
-      return window.localStorage;
-    }
-  } catch {
-    // localStorage is not available
-  }
-  // Return a no-op storage for environments without localStorage
-  return {
-    getItem: () => null,
-    setItem: () => {},
-    removeItem: () => {},
-  };
-};
-
 export const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, {
   auth: {
-    storage: getStorage(),
+    storage: localStorage,
     persistSession: true,
     autoRefreshToken: true,
   }
