@@ -1,73 +1,220 @@
-# Welcome to your Lovable project
+# 🐕 DogWalking - Plateforme de Promeneurs de Chiens Vérifiés en France
 
-## Project info
+[![React](https://img.shields.io/badge/React-18.3-blue.svg)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC.svg)](https://tailwindcss.com/)
+[![Supabase](https://img.shields.io/badge/Supabase-Connected-green.svg)](https://supabase.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-12.x-purple.svg)](https://www.framer.com/motion/)
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## 📋 Présentation
 
-There are several ways of editing your application.
+**DogWalking** est la plateforme n°1 en France pour trouver des promeneurs de chiens professionnels vérifiés. Notre mission : garantir la sécurité et le bien-être de votre compagnon grâce à :
 
-**Use Lovable**
+- ✅ **Promeneurs 100% vérifiés** (CNI, casier judiciaire B2, assurance RC)
+- ✅ **Paiement escrow sécurisé** (argent bloqué jusqu'à validation)
+- ✅ **Preuves photo/vidéo obligatoires** à chaque mission
+- ✅ **Assurance incluse** jusqu'à 2M€
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🎨 Identité Visuelle
 
-**Use your preferred IDE**
+| Élément | Valeur |
+|---------|--------|
+| **Couleur Primaire** | Vert sauge `hsl(142, 76%, 36%)` |
+| **Couleur Accent** | Bleu océan `hsl(200, 98%, 39%)` |
+| **Fond** | Clair (blanc/crème) |
+| **Style** | Moderne, accessible, rassurant |
+| **Cible** | Tous publics (y compris seniors) |
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+> ⚠️ **Règle absolue** : Pas de fond sombre/noir. Utiliser uniquement les tokens sémantiques du design system.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 🚀 Fonctionnalités Principales
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### 👤 Parcours Propriétaire (Espace Propriétaire)
+| Onglet | Description | Status |
+|--------|-------------|--------|
+| **Accueil** | Résumé, stats, prochaines réservations | ✅ |
+| **Réservations** | À venir, passées, annulation | ✅ |
+| **Mes Chiens** | Profils, photos, santé | ✅ |
+| **Messages** | Messagerie temps réel | ✅ |
+| **Factures** | Historique paiements, téléchargements | ✅ |
+| **Parrainage** | Code unique, tracking | ✅ |
+| **Profil** | Informations, CNI, paramètres | ✅ |
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 🚶 Parcours Promeneur (Espace Promeneur)
+| Onglet | Description | Status |
+|--------|-------------|--------|
+| **Accueil** | Demandes, revenus, missions | ✅ |
+| **Missions** | Accepter/refuser, prise en charge photo | ✅ |
+| **Calendrier** | Disponibilités hebdomadaires | ✅ |
+| **Messages** | Conversations propriétaires | ✅ |
+| **Revenus** | Gains, historique, commission 13% | ✅ |
+| **Performance** | Note, avis, badges | ✅ |
+| **Profil** | Documents, tarifs, bio publique | ✅ |
 
-# Step 3: Install the necessary dependencies.
-npm i
+### 🔒 Sécurité & Confiance
+- ✅ Vérification manuelle des documents sous 48h
+- ✅ Upload documents vers bucket privé
+- ✅ Preuves photo/vidéo obligatoires (remplace GPS)
+- ✅ Signalement incidents et litiges
+- ✅ Avis certifiés (uniquement après service)
+- 🔜 Paiement escrow (Stripe Connect)
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+---
+
+## 📁 Architecture du Projet
+
+```
+src/
+├── assets/                    # Images et ressources statiques
+│   ├── pages/                 # Images hero des pages
+│   ├── homepage/              # Images sections homepage
+│   ├── services/              # Images services détaillés
+│   └── trust/                 # Images confiance et sécurité
+│
+├── components/
+│   ├── booking/               # Réservation, preuves photo
+│   ├── dashboard/
+│   │   ├── owner/             # Onglets dashboard propriétaire
+│   │   ├── walker/            # Onglets dashboard promeneur
+│   │   └── shared/            # Composants partagés
+│   ├── seo/                   # SEOHead, structured data
+│   └── ui/                    # 50+ composants Shadcn personnalisés
+│
+├── pages/
+│   ├── dashboard/
+│   │   ├── OwnerDashboard.tsx    # Espace Propriétaire
+│   │   └── WalkerDashboard.tsx   # Espace Promeneur
+│   └── services/              # 6 Pages piliers SEO
+│
+├── hooks/                     # Hooks personnalisés (realtime, PWA, etc.)
+├── integrations/supabase/     # Client et types Supabase
+└── cahier-de-charges/         # Spécifications détaillées
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🌐 Routes de l'Application
 
-**Use GitHub Codespaces**
+### Dashboards (Séparation stricte)
+| Route | Description |
+|-------|-------------|
+| `/dashboard-proprietaire` | Espace Propriétaire (7 onglets) |
+| `/dashboard-promeneur` | Espace Promeneur (7 onglets) |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Pages Publiques
+| Route | Description |
+|-------|-------------|
+| `/` | Accueil |
+| `/services/promenade` | Promenade de chien |
+| `/services/garde` | Garde à domicile |
+| `/services/visite` | Visite à domicile |
+| `/services/dog-sitting` | Dog sitting |
+| `/services/pet-sitting` | Pet sitting |
+| `/services/marche-reguliere` | Marche régulière |
+| `/walkers` | Recherche promeneurs |
+| `/zone/:slug` | Pages locales SEO |
+| `/blog` | Articles et conseils |
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## 💾 Supabase Storage Buckets
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+| Bucket | Public | Usage |
+|--------|--------|-------|
+| `avatars` | ✅ Oui | Photos profil utilisateurs |
+| `dog-photos` | ✅ Oui | Photos des chiens |
+| `walker-documents` | ❌ Non | CNI, casier B2, assurance RC |
+| `walk-proofs` | ❌ Non | Preuves photo/vidéo missions |
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+## 📊 Base de Données (Tables Principales)
 
-## Can I connect a custom domain to my Lovable project?
+| Table | Description |
+|-------|-------------|
+| `profiles` | Informations utilisateurs |
+| `dogs` | Profils des chiens |
+| `bookings` | Réservations |
+| `walker_profiles` | Profils promeneurs (tarifs, services) |
+| `walker_documents` | Documents vérification |
+| `walker_earnings` | Revenus promeneurs |
+| `walk_proofs` | Preuves photo missions |
+| `reviews` | Avis clients |
+| `favorites` | Promeneurs favoris |
+| `messages` | Messagerie |
+| `notifications` | Notifications |
+| `referrals` | Parrainage |
+| `disputes` | Litiges |
+| `incident_reports` | Signalements |
 
-Yes, you can!
+---
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📅 Roadmap
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+### ✅ Phase 1 : Fondations (COMPLET - 100%)
+- [x] Authentification Supabase
+- [x] Dashboards séparés propriétaire/promeneur
+- [x] Upload photos et documents
+- [x] Système de preuves photo obligatoires
+- [x] SEO optimisé (6 pages piliers)
+- [x] Design responsive accessible
+
+### 🔜 Phase 2 : Paiement (EN ATTENTE)
+- [ ] Intégration Stripe Connect
+- [ ] Paiement escrow 48h
+- [ ] Facturation automatique
+
+### 🔜 Phase 3 : Communication
+- [ ] Emails transactionnels (Resend)
+- [ ] Notifications push PWA
+- [ ] SMS urgences (Twilio)
+
+### ⚪ Phase 4 : Fonctionnalités Avancées
+- [ ] Calendrier synchronisé (Google, iCal)
+- [ ] Réservations récurrentes
+- [ ] Application mobile native
+
+---
+
+## 🛠️ Stack Technique
+
+| Technologie | Usage | Version |
+|-------------|-------|---------|
+| **React** | Framework UI | 18.3 |
+| **TypeScript** | Typage strict | 5.0 |
+| **Vite** | Build & HMR | 5.x |
+| **Tailwind CSS** | Styling utility-first | 3.4 |
+| **Shadcn/UI** | Composants accessibles | Latest |
+| **Framer Motion** | Animations fluides | 12.x |
+| **Supabase** | Backend complet | 2.x |
+| **React Router** | Navigation SPA | 6.x |
+| **React Query** | Data fetching & cache | 5.x |
+
+---
+
+## 📄 Documentation
+
+- `README.md` - Ce fichier
+- `CAHIER_DES_CHARGES.md` - Spécifications fonctionnelles complètes
+- `SEO_VALIDATION_CHECKLIST.md` - Checklist SEO
+- `cahier-de-charges/DASHBOARD-PROPRIETAIRE.md` - Specs dashboard propriétaire
+- `cahier-de-charges/DASHBOARD-PROMENEUR.md` - Specs dashboard promeneur
+- `cahier-de-charges/BIBLE-OPEN-GO-2026.md` - Vision projet
+
+---
+
+## 📄 Licence
+
+MIT License - Voir [LICENSE](LICENSE)
+
+---
+
+*Développé avec ❤️ pour les amoureux des chiens en France - Objectif : Leader français Pet Care 🇫🇷 🐕*
+
+**Progression globale : ~85%** | Mise à jour : Janvier 2026

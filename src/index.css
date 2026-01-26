@@ -2,76 +2,152 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap');
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here.
+All colors MUST be HSL.
+*/
 
 @layer base {
   :root {
-    --background: 40 30% 97%;
-    --foreground: 30 15% 15%;
+    --background: 0 0% 100%;
+    --foreground: 220 13% 18%;
 
     --card: 0 0% 100%;
-    --card-foreground: 30 15% 15%;
+    --card-foreground: 220 13% 18%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 30 15% 15%;
+    --popover-foreground: 220 13% 18%;
 
-    --primary: 35 85% 55%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 30 20% 92%;
-    --secondary-foreground: 30 15% 20%;
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 220 13% 18%;
 
-    --muted: 35 15% 90%;
-    --muted-foreground: 30 10% 45%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 8.9% 46.1%;
 
-    --accent: 25 75% 48%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 200 98% 39%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 35 20% 85%;
-    --input: 35 20% 85%;
-    --ring: 35 85% 55%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 142 76% 36%;
 
-    --radius: 0.75rem;
+    /* Dog Walking Theme Colors */
+    --sage-green: 142 76% 36%;
+    --sage-green-light: 142 76% 90%;
+    --ocean-blue: 200 98% 39%;
+    --ocean-blue-light: 200 98% 90%;
+    --warm-beige: 45 29% 97%;
+    --earthy-brown: 30 20% 25%;
 
-    --font-heading: 'Playfair Display', serif;
-    --font-body: 'Inter', sans-serif;
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--sage-green)), hsl(var(--ocean-blue)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--sage-green)) 0%, hsl(var(--ocean-blue)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--background)) 0%, hsl(var(--warm-beige)) 100%);
 
-    --gradient-warm: linear-gradient(135deg, hsl(35 85% 55%) 0%, hsl(25 75% 48%) 100%);
-    --gradient-soft: linear-gradient(180deg, hsl(40 30% 97%) 0%, hsl(35 25% 93%) 100%);
+    /* Shadows */
+    --shadow-soft: 0 4px 20px -2px hsl(var(--sage-green) / 0.1);
+    --shadow-card: 0 8px 30px -6px hsl(var(--sage-green) / 0.15);
+    --shadow-button: 0 4px 15px -3px hsl(var(--sage-green) / 0.3);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
   .dark {
-    --background: 30 15% 10%;
-    --foreground: 40 20% 95%;
+    --background: 220 27% 8%;
+    --foreground: 220 14% 96%;
 
-    --card: 30 15% 12%;
-    --card-foreground: 40 20% 95%;
+    --card: 220 27% 8%;
+    --card-foreground: 220 14% 96%;
 
-    --popover: 30 15% 12%;
-    --popover-foreground: 40 20% 95%;
+    --popover: 220 27% 8%;
+    --popover-foreground: 220 14% 96%;
 
-    --primary: 35 85% 55%;
-    --primary-foreground: 30 15% 10%;
+    --primary: 142 76% 36%;
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 30 15% 18%;
-    --secondary-foreground: 40 20% 90%;
+    --secondary: 220 27% 12%;
+    --secondary-foreground: 220 14% 96%;
 
-    --muted: 30 15% 20%;
-    --muted-foreground: 35 15% 60%;
+    --muted: 220 27% 12%;
+    --muted-foreground: 220 8.9% 56.1%;
 
-    --accent: 25 75% 48%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 200 98% 39%;
+    --accent-foreground: 0 0% 98%;
 
     --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive-foreground: 220 14% 96%;
 
-    --border: 30 15% 20%;
-    --input: 30 15% 20%;
-    --ring: 35 85% 55%;
+    --border: 220 27% 12%;
+    --input: 220 27% 12%;
+    --ring: 142 76% 36%;
+
+    /* Dark mode gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--sage-green)), hsl(var(--ocean-blue)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--sage-green)) 0%, hsl(var(--ocean-blue)) 100%);
+    --gradient-card: linear-gradient(145deg, hsl(var(--background)) 0%, hsl(220 27% 10%) 100%);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
   }
+}
+
+/* Icon color utilities */
+.icon-primary { @apply text-primary; }
+.icon-accent { @apply text-accent; }
+.icon-success { @apply text-emerald-500; }
+.icon-warning { @apply text-amber-500; }
+.icon-info { @apply text-sky-500; }
+
+/* Icon background utilities */
+.icon-bg-primary { @apply bg-primary/10; }
+.icon-bg-accent { @apply bg-accent/10; }
+.icon-bg-success { @apply bg-emerald-500/10; }
+.icon-bg-warning { @apply bg-amber-500/10; }
+.icon-bg-info { @apply bg-sky-500/10; }
+
+/* Gradient text utility */
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent;
+}
+
+/* Animated underline */
+.animated-underline {
+  @apply relative after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
+}
+
+/* Glow effects */
+.glow-primary {
+  box-shadow: 0 0 30px hsl(var(--primary) / 0.3);
+}
+
+.glow-accent {
+  box-shadow: 0 0 30px hsl(var(--accent) / 0.3);
 }
 
 @layer base {
@@ -81,10 +157,5 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-body);
-  }
-
-  h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-heading);
   }
 }
