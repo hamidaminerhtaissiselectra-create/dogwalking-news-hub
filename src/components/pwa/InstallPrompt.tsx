@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { X, Download, Smartphone, Bell, Wifi, WifiOff } from "lucide-react";
 import { usePWA } from "@/hooks/usePWA";
+import { getSafeLocalStorage } from "@/lib/safeStorage";
 
 export const InstallPrompt: React.FC = () => {
   const [dismissed, setDismissed] = useState(false);
@@ -19,12 +20,14 @@ export const InstallPrompt: React.FC = () => {
 
   // Register service worker on mount
   useEffect(() => {
-    registerServiceWorker();
+    // In some sandboxed contexts (e.g. preview iframes), SW registration can be denied.
+    void registerServiceWorker().catch(() => {});
   }, [registerServiceWorker]);
 
   // Check if prompt was dismissed before
   useEffect(() => {
-    const dismissedAt = localStorage.getItem("pwa-prompt-dismissed");
+    const storage = getSafeLocalStorage();
+    const dismissedAt = storage.getItem("pwa-prompt-dismissed");
     if (dismissedAt) {
       const dismissedDate = new Date(dismissedAt);
       const now = new Date();
@@ -47,14 +50,18 @@ export const InstallPrompt: React.FC = () => {
 
   const handleDismiss = () => {
     setDismissed(true);
-    localStorage.setItem("pwa-prompt-dismissed", new Date().toISOString());
+    getSafeLocalStorage().setItem("pwa-prompt-dismissed", new Date().toISOString());
   };
 
   const handleInstall = async () => {
-    const success = await installApp();
-    if (success) {
-      // Ask for notification permission after install
-      await requestPushPermission();
+    try {
+      const success = await installApp();
+      if (success) {
+        // Ask for notification permission after install
+        await requestPushPermission();
+      }
+    } catch {
+      // Swallow any unexpected browser permission errors in sandboxed contexts.
     }
   };
 

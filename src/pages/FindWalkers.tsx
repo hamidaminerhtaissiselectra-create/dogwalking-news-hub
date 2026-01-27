@@ -16,6 +16,7 @@ import { SearchFilters } from "@/components/booking/SearchFilters";
 import { WalkerCard } from "@/components/booking/WalkerCard";
 import { OwnerSection, ProviderSection, ServiceRequestCard, RequestFilters, ServiceRequest, ServiceRequestForm } from "@/components/hub";
 import { useWalkerMatching, MatchingCriteria } from "@/hooks/useWalkerMatching";
+import { getSafeSessionStorage } from "@/lib/safeStorage";
 
 // Hero image
 import heroImage from "@/assets/pages/trouver-promeneurs-hero.jpg";
@@ -208,7 +209,10 @@ const FindWalkers = () => {
   const handleBookWalker = async (walkerId: string) => {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) {
-      sessionStorage.setItem('pendingBooking', JSON.stringify({ walkerId, returnUrl: `/book/${walkerId}` }));
+      getSafeSessionStorage().setItem(
+        'pendingBooking',
+        JSON.stringify({ walkerId, returnUrl: `/book/${walkerId}` })
+      );
       toast({
         title: "Créez votre compte",
         description: "Inscrivez-vous pour réserver ce prestataire.",
