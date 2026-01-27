@@ -44,6 +44,10 @@ All colors MUST be HSL.
     --warm-beige: 45 29% 97%;
     --earthy-brown: 30 20% 25%;
 
+    /* Heart / Love color (red-pink) */
+    --heart: 350 89% 60%;
+    --heart-light: 350 89% 90%;
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--sage-green)), hsl(var(--ocean-blue)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--sage-green)) 0%, hsl(var(--ocean-blue)) 100%);
