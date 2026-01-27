@@ -87,7 +87,7 @@ export const SearchForm = () => {
               onClick={() => setSelectedService(service.id)}
             >
               <RadioGroupItem value={service.id} id={service.id} className="border-primary" />
-              <Heart className="h-5 w-5 text-primary fill-primary/20" />
+              <Heart className="h-5 w-5 text-[hsl(var(--heart))] fill-[hsl(var(--heart-light))]" />
               <Label htmlFor={service.id} className="cursor-pointer flex-1 text-base font-medium">
                 {service.label}
               </Label>
@@ -115,7 +115,7 @@ export const SearchForm = () => {
               onClick={() => setSelectedService(service.id)}
             >
               <RadioGroupItem value={service.id} id={service.id} className="border-primary" />
-              <Heart className="h-5 w-5 text-primary fill-primary/20" />
+              <Heart className="h-5 w-5 text-[hsl(var(--heart))] fill-[hsl(var(--heart-light))]" />
               <Label htmlFor={service.id} className="cursor-pointer flex-1 text-base font-medium">
                 {service.label}
               </Label>
