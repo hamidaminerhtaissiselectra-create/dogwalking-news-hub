@@ -10,6 +10,7 @@ import { ArrowLeft, Shield, Dog, CheckCircle, Star } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
+import { getSafeSessionStorage } from "@/lib/safeStorage";
 
 // Hero image
 import heroImage from "@/assets/hero-dog-walking.jpg";
@@ -31,11 +32,12 @@ const Auth = () => {
   }, [navigate]);
 
   const handlePostAuthRedirect = () => {
+    const storage = getSafeSessionStorage();
     // Check for pending booking
-    const pendingBooking = sessionStorage.getItem('pendingBooking');
+    const pendingBooking = storage.getItem('pendingBooking');
     if (pendingBooking) {
       const { returnUrl } = JSON.parse(pendingBooking);
-      sessionStorage.removeItem('pendingBooking');
+      storage.removeItem('pendingBooking');
       navigate(returnUrl);
       return;
     }
@@ -205,7 +207,7 @@ const Auth = () => {
           </Button>
 
           {/* Pending booking notice */}
-          {sessionStorage.getItem('pendingBooking') && (
+          {getSafeSessionStorage().getItem('pendingBooking') && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}

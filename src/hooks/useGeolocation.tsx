@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { getSafeLocalStorage } from '@/lib/safeStorage';
 
 interface GeoLocation {
   city: string;
@@ -29,8 +30,10 @@ export const useGeolocation = (): UseGeolocationReturn => {
   useEffect(() => {
     const fetchGeolocation = async () => {
       try {
+        const storage = getSafeLocalStorage();
+
         // Check cache first
-        const cached = localStorage.getItem(STORAGE_KEY);
+        const cached = storage.getItem(STORAGE_KEY);
         if (cached) {
           const { data, timestamp } = JSON.parse(cached);
           if (Date.now() - timestamp < CACHE_DURATION) {
@@ -56,7 +59,7 @@ export const useGeolocation = (): UseGeolocationReturn => {
         } else if (data?.success && data?.data) {
           setLocation(data.data);
           // Cache the result
-          localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          storage.setItem(STORAGE_KEY, JSON.stringify({
             data: data.data,
             timestamp: Date.now()
           }));

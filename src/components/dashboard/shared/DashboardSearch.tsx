@@ -5,6 +5,7 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Search, Clock, TrendingUp, ChevronRight, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { LucideIcon } from "lucide-react";
+import { getSafeLocalStorage } from "@/lib/safeStorage";
 
 interface SearchItem {
   id: string;
@@ -31,7 +32,7 @@ const DashboardSearch = ({ items, placeholder = "Rechercher..." }: DashboardSear
 
   // Load recent searches from localStorage
   useEffect(() => {
-    const stored = localStorage.getItem(RECENT_SEARCHES_KEY);
+    const stored = getSafeLocalStorage().getItem(RECENT_SEARCHES_KEY);
     if (stored) {
       try {
         setRecentSearches(JSON.parse(stored));
@@ -62,12 +63,12 @@ const DashboardSearch = ({ items, placeholder = "Rechercher..." }: DashboardSear
     
     const updated = [term, ...recentSearches.filter(s => s !== term)].slice(0, MAX_RECENT);
     setRecentSearches(updated);
-    localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
+    getSafeLocalStorage().setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
   }, [recentSearches]);
 
   const clearRecentSearches = useCallback(() => {
     setRecentSearches([]);
-    localStorage.removeItem(RECENT_SEARCHES_KEY);
+    getSafeLocalStorage().removeItem(RECENT_SEARCHES_KEY);
   }, []);
 
   const handleSelect = useCallback((item: SearchItem) => {
