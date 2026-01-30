@@ -319,10 +319,10 @@ const WalkerDashboardPage = () => {
         </div>
       </main>
       
-      {/* Mobile Tab Bar */}
+      {/* Mobile Tab Bar - Show first 4 tabs on mobile */}
       <MobileTabBar 
-        tabs={[...TABS]} 
-        activeTab={currentTab === "missions" || currentTab === "messages" || currentTab === "performance" ? "apercu" : currentTab} 
+        tabs={TABS.slice(0, 4).map(t => ({ ...t }))} 
+        activeTab={currentTab === "disponibilites" || currentTab === "performance" ? "apercu" : currentTab} 
         onTabChange={(id) => setCurrentTab(id as TabId)} 
       />
 
