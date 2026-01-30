@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { 
   Dog, Calendar, Search, MessageCircle, Gift, User, 
-  Sparkles, ArrowRight, Settings, Plus
+  Sparkles, ArrowRight, Settings, Plus, FileText
 } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -26,6 +26,7 @@ const WalkersTab = lazy(() => import("@/components/dashboard/owner/WalkersTab"))
 const MessagesTab = lazy(() => import("@/components/dashboard/owner/MessagesTab"));
 const ReferralTab = lazy(() => import("@/components/dashboard/owner/ReferralTab"));
 const ProfileTab = lazy(() => import("@/components/dashboard/owner/ProfileTab"));
+const InvoicesSection = lazy(() => import("@/components/dashboard/owner/InvoicesSection"));
 
 import heroImage from "@/assets/pages/dashboard-owner-hero.jpg";
 
@@ -39,7 +40,7 @@ const TABS = [
 // Internal mapping for mobile tabs to actual content tabs if needed
 // For now, we'll keep it simple and map directly where possible
 
-type TabId = typeof TABS[number]["id"] | "chiens" | "reservations" | "parrainage";
+type TabId = typeof TABS[number]["id"] | "chiens" | "reservations" | "parrainage" | "facturation";
 
 const TabLoader = () => (
   <div className="flex items-center justify-center h-64">
@@ -216,6 +217,9 @@ const OwnerDashboard = () => {
                 <TabsTrigger value="parrainage" className="flex-1 min-w-[120px] gap-2 py-3 px-4 rounded-xl">
                   <Gift className="h-4 w-4" /> Parrainage
                 </TabsTrigger>
+                <TabsTrigger value="facturation" className="flex-1 min-w-[120px] gap-2 py-3 px-4 rounded-xl">
+                  <FileText className="h-4 w-4" /> Factures
+                </TabsTrigger>
                 <TabsTrigger value="profil" className="flex-1 min-w-[120px] gap-2 py-3 px-4 rounded-xl">
                   <User className="h-4 w-4" /> Profil
                 </TabsTrigger>
@@ -241,6 +245,7 @@ const OwnerDashboard = () => {
                 {currentTab === "promeneurs" && <WalkersTab />}
                 {currentTab === "messages" && <MessagesTab />}
                 {currentTab === "parrainage" && <ReferralTab />}
+                {currentTab === "facturation" && <InvoicesSection />}
                 {currentTab === "profil" && <ProfileTab profile={profile} />}
               </Suspense>
             </motion.div>
@@ -251,7 +256,7 @@ const OwnerDashboard = () => {
       {/* Mobile Tab Bar */}
       <MobileTabBar 
         tabs={[...TABS]} 
-        activeTab={currentTab === "chiens" || currentTab === "reservations" || currentTab === "parrainage" ? "apercu" : currentTab} 
+        activeTab={currentTab === "chiens" || currentTab === "reservations" || currentTab === "parrainage" || currentTab === "facturation" ? "apercu" : currentTab} 
         onTabChange={(id) => setCurrentTab(id as TabId)} 
       />
 
