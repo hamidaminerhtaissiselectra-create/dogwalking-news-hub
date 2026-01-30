@@ -29,13 +29,14 @@ const WalkerProfileTab = lazy(() => import("@/components/dashboard/walker/Profil
 import heroImage from "@/assets/pages/dashboard-walker-hero.jpg";
 
 const TABS = [
-  { id: "apercu", label: "Accueil", icon: Search, description: "Vue d'ensemble" },
-  { id: "disponibilites", label: "Planning", icon: Calendar, description: "Planning" },
-  { id: "gains", label: "Gains", icon: Wallet, description: "Revenus et retraits" },
-  { id: "profil", label: "Profil", icon: User, description: "Paramètres" },
+  { id: "apercu", label: "Accueil", icon: LayoutDashboard, description: "Vue d'ensemble" },
+  { id: "missions", label: "Missions", icon: Calendar, description: "Mes réservations" },
+  { id: "messages", label: "Messages", icon: MessageCircle, description: "Conversations" },
+  { id: "gains", label: "Revenus", icon: Euro, description: "Mes gains" },
+  { id: "profil", label: "Profil", icon: User, description: "Mon compte" },
 ] as const;
 
-type TabId = typeof TABS[number]["id"] | "missions" | "messages" | "performance";
+type TabId = typeof TABS[number]["id"] | "disponibilites" | "performance";
 
 const TabLoader = () => (
   <div className="flex items-center justify-center h-64">
