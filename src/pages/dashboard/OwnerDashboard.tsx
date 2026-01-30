@@ -193,28 +193,6 @@ const OwnerDashboard = () => {
           )}
         </AnimatePresence>
 
-        {/* Search Bar */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ delay: 0.5 }}
-          className="mb-6"
-        >
-          <DashboardSearch
-            placeholder="Rechercher une action, un chien, un promeneur..."
-            items={[
-              { id: "add-dog", type: "action", label: "Ajouter un chien", description: "Enregistrer un nouveau compagnon", icon: Dog, action: () => setCurrentTab("chiens"), keywords: ["nouveau", "créer"] },
-              { id: "find-walker", type: "action", label: "Trouver un promeneur", description: "Rechercher près de chez vous", icon: Search, action: () => setCurrentTab("promeneurs"), keywords: ["chercher", "réserver"] },
-              { id: "book", type: "action", label: "Réserver une promenade", description: "Nouvelle réservation", icon: Calendar, action: () => setCurrentTab("promeneurs"), keywords: ["réservation"] },
-              { id: "messages", type: "action", label: "Voir les messages", description: "Conversations avec les promeneurs", icon: MessageCircle, action: () => setCurrentTab("messages"), keywords: ["chat"] },
-              { id: "referral", type: "action", label: "Programme de parrainage", description: "Gagnez 15€ par ami", icon: Gift, action: () => setCurrentTab("parrainage"), keywords: ["code", "invitation"] },
-              { id: "profile", type: "page", label: "Mon profil", icon: User, action: () => setCurrentTab("profil") },
-              { id: "settings", type: "page", label: "Paramètres", icon: Settings, action: () => setCurrentTab("profil") },
-              { id: "bookings", type: "page", label: "Mes réservations", icon: Calendar, action: () => setCurrentTab("reservations" as TabId) },
-            ]}
-          />
-        </motion.div>
-
         {/* Desktop Tabs Navigation */}
         <div className="hidden md:block">
           <Tabs value={currentTab} onValueChange={(v) => setCurrentTab(v as TabId)} className="space-y-8">
