@@ -247,8 +247,8 @@ const WalkerDashboardPage = () => {
           </Tabs>
         </div>
 
-        {/* Tab Content (Shared for Mobile/Desktop) */}
-        <div className="mt-8">
+        {/* Tab Content */}
+        <div className="mt-4 md:mt-8">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentTab}
