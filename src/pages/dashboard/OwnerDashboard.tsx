@@ -39,7 +39,7 @@ const TABS = [
 // Internal mapping for mobile tabs to actual content tabs if needed
 // For now, we'll keep it simple and map directly where possible
 
-type TabId = typeof TABS[number]["id"] | "chiens" | "promeneurs" | "messages" | "parrainage";
+type TabId = typeof TABS[number]["id"] | "chiens" | "reservations" | "parrainage";
 
 const TabLoader = () => (
   <div className="flex items-center justify-center h-64">
@@ -243,7 +243,7 @@ const OwnerDashboard = () => {
               { id: "referral", type: "action", label: "Programme de parrainage", description: "Gagnez 15€ par ami", icon: Gift, action: () => setCurrentTab("parrainage"), keywords: ["code", "invitation"] },
               { id: "profile", type: "page", label: "Mon profil", icon: User, action: () => setCurrentTab("profil") },
               { id: "settings", type: "page", label: "Paramètres", icon: Settings, action: () => setCurrentTab("profil") },
-              { id: "bookings", type: "page", label: "Mes réservations", icon: Calendar, action: () => setCurrentTab("reservations") },
+              { id: "bookings", type: "page", label: "Mes réservations", icon: Calendar, action: () => setCurrentTab("reservations" as TabId) },
             ]}
           />
         </motion.div>
@@ -297,7 +297,6 @@ const OwnerDashboard = () => {
                 {currentTab === "messages" && <MessagesTab />}
                 {currentTab === "parrainage" && <ReferralTab />}
                 {currentTab === "profil" && <ProfileTab profile={profile} />}
-                {currentTab === "calendar" && <BookingsTab />} {/* Map calendar to bookings for now */}
               </Suspense>
             </motion.div>
           </AnimatePresence>
@@ -307,7 +306,7 @@ const OwnerDashboard = () => {
       {/* Mobile Tab Bar */}
       <MobileTabBar 
         tabs={[...TABS]} 
-        activeTab={currentTab === "chiens" || currentTab === "promeneurs" || currentTab === "parrainage" ? "apercu" : currentTab} 
+        activeTab={currentTab === "chiens" || currentTab === "reservations" || currentTab === "parrainage" ? "apercu" : currentTab} 
         onTabChange={(id) => setCurrentTab(id as TabId)} 
       />
 
