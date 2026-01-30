@@ -30,16 +30,16 @@ const ProfileTab = lazy(() => import("@/components/dashboard/owner/ProfileTab"))
 import heroImage from "@/assets/pages/dashboard-owner-hero.jpg";
 
 const TABS = [
-  { id: "apercu", label: "Accueil", icon: Search, description: "Statistiques et alertes" },
-  { id: "reservations", label: "Missions", icon: MessageCircle, description: "Historique et à venir" },
-  { id: "calendar", label: "Calendrier", icon: Calendar, description: "Planning des promenades" },
-  { id: "profil", label: "Profil", icon: User, description: "Compte et sécurité" },
+  { id: "apercu", label: "Accueil", icon: Search, description: "Accueil" },
+  { id: "promeneurs", label: "Promeneurs", icon: Dog, description: "Trouver un promeneur" },
+  { id: "messages", label: "Messages", icon: MessageCircle, description: "Conversations" },
+  { id: "profil", label: "Profil", icon: User, description: "Mon compte" },
 ] as const;
 
 // Internal mapping for mobile tabs to actual content tabs if needed
 // For now, we'll keep it simple and map directly where possible
 
-type TabId = typeof TABS[number]["id"] | "chiens" | "promeneurs" | "messages" | "parrainage";
+type TabId = typeof TABS[number]["id"] | "chiens" | "reservations" | "parrainage";
 
 const TabLoader = () => (
   <div className="flex items-center justify-center h-64">
@@ -144,109 +144,54 @@ const OwnerDashboard = () => {
       />
       <Header />
       
-      <main className="container mx-auto px-4 py-8">
-        {/* Identification claire de l'espace */}
-        <div className="mb-4 flex items-center gap-2">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary font-semibold text-sm">
-            <Dog className="h-4 w-4" />
-            Espace Propriétaire
-          </span>
-        </div>
-
-        {/* Hero Section - Fond clair */}
-        <motion.section 
-          initial={{ opacity: 0, y: 20 }}
+      <main className="container mx-auto px-4 py-6">
+        {/* Simple Header - Mobile First */}
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative mb-10 rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-primary/10 via-primary/5 to-background border border-border min-h-[200px] flex items-center"
+          className="flex items-center justify-between mb-6"
         >
-          <div className="absolute inset-0 z-0">
-            <img 
-              src={heroImage} 
-              alt="Dashboard Hero" 
-              className="w-full h-full object-cover opacity-10"
-            />
-          </div>
-          
-          <div className="relative z-10 p-8 md:p-12 w-full flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                <Avatar className="h-20 w-20 md:h-24 md:w-24 border-4 border-background shadow-xl">
-                  <AvatarImage src={profile?.avatar_url} />
-                  <AvatarFallback className="text-2xl bg-primary/10 text-primary">{displayName.charAt(0).toUpperCase()}</AvatarFallback>
-                </Avatar>
-                <div className="absolute -bottom-2 -right-2 bg-primary h-6 w-6 rounded-full border-4 border-background" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Bonjour, {displayName} 👋</h1>
-                <p className="text-muted-foreground mt-1 text-lg">Espace Propriétaire • Heureux de vous revoir</p>
-              </div>
-            </div>
-            
-            <div className="flex gap-3">
-              <Button onClick={() => setCurrentTab('chiens')} className="gap-2 shadow-lg bg-primary hover:bg-primary/90">
-                <Plus className="h-4 w-4" /> Ajouter un chien
-              </Button>
-              <Button variant="outline" onClick={() => setCurrentTab('promeneurs')} className="gap-2 bg-background border-primary/20 hover:bg-primary/5">
-                <Search className="h-4 w-4" /> Trouver un promeneur
-              </Button>
+          <div className="flex items-center gap-3">
+            <Avatar className="h-12 w-12 border-2 border-primary/20 shadow-md">
+              <AvatarImage src={profile?.avatar_url} />
+              <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                {displayName.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h1 className="text-xl font-bold text-foreground">Bonjour, {displayName}</h1>
+              <p className="text-sm text-muted-foreground">Votre chien est entre de bonnes mains</p>
             </div>
           </div>
-        </motion.section>
+        </motion.div>
 
-        {/* Profile Completion Alert */}
+        {/* Profile Completion Alert - Compact */}
         <AnimatePresence>
           {profileCompletion() < 100 && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-6"
+              className="mb-4"
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl border border-primary/20 bg-primary/5">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Sparkles className="h-6 w-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-foreground">Complétez votre profil</p>
-                    <p className="text-sm text-muted-foreground">Un profil complet inspire plus confiance aux promeneurs.</p>
+              <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-primary/20 bg-primary/5">
+                <div className="flex items-center gap-3 flex-1">
+                  <Sparkles className="h-5 w-5 text-primary flex-shrink-0" />
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-sm font-medium">Complétez votre profil</span>
+                      <span className="text-sm font-bold text-primary">{profileCompletion()}%</span>
+                    </div>
+                    <Progress value={profileCompletion()} className="h-1.5 mt-1" />
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-3">
-                    <Progress value={profileCompletion()} className="w-28 h-3" />
-                    <span className="text-sm font-bold text-primary">{profileCompletion()}%</span>
-                  </div>
-                  <Button variant="outline" size="sm" onClick={() => setCurrentTab('profil')} className="gap-2 border-primary/20 hover:bg-primary/10">
-                    Compléter <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Button variant="ghost" size="sm" onClick={() => setCurrentTab('profil')} className="text-primary">
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
               </div>
             </motion.div>
           )}
         </AnimatePresence>
-
-        {/* Search Bar */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }} 
-          animate={{ opacity: 1, y: 0 }} 
-          transition={{ delay: 0.5 }}
-          className="mb-6"
-        >
-          <DashboardSearch
-            placeholder="Rechercher une action, un chien, un promeneur..."
-            items={[
-              { id: "add-dog", type: "action", label: "Ajouter un chien", description: "Enregistrer un nouveau compagnon", icon: Dog, action: () => setCurrentTab("chiens"), keywords: ["nouveau", "créer"] },
-              { id: "find-walker", type: "action", label: "Trouver un promeneur", description: "Rechercher près de chez vous", icon: Search, action: () => setCurrentTab("promeneurs"), keywords: ["chercher", "réserver"] },
-              { id: "book", type: "action", label: "Réserver une promenade", description: "Nouvelle réservation", icon: Calendar, action: () => setCurrentTab("promeneurs"), keywords: ["réservation"] },
-              { id: "messages", type: "action", label: "Voir les messages", description: "Conversations avec les promeneurs", icon: MessageCircle, action: () => setCurrentTab("messages"), keywords: ["chat"] },
-              { id: "referral", type: "action", label: "Programme de parrainage", description: "Gagnez 15€ par ami", icon: Gift, action: () => setCurrentTab("parrainage"), keywords: ["code", "invitation"] },
-              { id: "profile", type: "page", label: "Mon profil", icon: User, action: () => setCurrentTab("profil") },
-              { id: "settings", type: "page", label: "Paramètres", icon: Settings, action: () => setCurrentTab("profil") },
-              { id: "bookings", type: "page", label: "Mes réservations", icon: Calendar, action: () => setCurrentTab("reservations") },
-            ]}
-          />
-        </motion.div>
 
         {/* Desktop Tabs Navigation */}
         <div className="hidden md:block">
@@ -297,7 +242,6 @@ const OwnerDashboard = () => {
                 {currentTab === "messages" && <MessagesTab />}
                 {currentTab === "parrainage" && <ReferralTab />}
                 {currentTab === "profil" && <ProfileTab profile={profile} />}
-                {currentTab === "calendar" && <BookingsTab />} {/* Map calendar to bookings for now */}
               </Suspense>
             </motion.div>
           </AnimatePresence>
@@ -307,7 +251,7 @@ const OwnerDashboard = () => {
       {/* Mobile Tab Bar */}
       <MobileTabBar 
         tabs={[...TABS]} 
-        activeTab={currentTab === "chiens" || currentTab === "promeneurs" || currentTab === "parrainage" ? "apercu" : currentTab} 
+        activeTab={currentTab === "chiens" || currentTab === "reservations" || currentTab === "parrainage" ? "apercu" : currentTab} 
         onTabChange={(id) => setCurrentTab(id as TabId)} 
       />
 

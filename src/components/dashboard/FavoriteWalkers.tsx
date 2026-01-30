@@ -37,7 +37,7 @@ export const FavoriteWalkers = ({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Heart className="h-5 w-5 text-primary fill-primary/20" />
+          <Heart className="h-5 w-5 text-heart fill-heart-light" />
           Promeneurs favoris
         </CardTitle>
         <CardDescription>{walkers.length} promeneur(s) favori(s)</CardDescription>
@@ -45,8 +45,8 @@ export const FavoriteWalkers = ({
       <CardContent>
         {walkers.length === 0 ? (
           <div className="text-center py-8">
-            <div className="w-16 h-16 rounded-full bg-muted mx-auto mb-4 flex items-center justify-center">
-              <Heart className="h-8 w-8 text-muted-foreground/50" />
+            <div className="w-16 h-16 rounded-full bg-heart-light mx-auto mb-4 flex items-center justify-center">
+              <Heart className="h-8 w-8 text-heart/50" />
             </div>
             <h3 className="font-semibold mb-2">Aucun favori</h3>
             <p className="text-sm text-muted-foreground mb-4">

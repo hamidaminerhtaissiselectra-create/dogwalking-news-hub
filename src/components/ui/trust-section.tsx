@@ -6,7 +6,7 @@ import couvertureFrance from '@/assets/trust/couverture-france.jpg';
 export const TrustSection = () => {
   const stats = [
     { icon: Users, value: "10,000+", label: "Propriétaires satisfaits", color: "text-primary" },
-    { icon: Heart, value: "5,000+", label: "Promeneurs vérifiés", color: "text-primary" },
+    { icon: Heart, value: "5,000+", label: "Promeneurs vérifiés", color: "text-heart" },
     { icon: Star, value: "4.9/5", label: "Note moyenne", color: "text-primary" },
     { icon: MapPin, value: "50+", label: "Villes en France", color: "text-accent" },
     { icon: Shield, value: "100%", label: "Missions assurées", color: "text-primary" },
@@ -42,7 +42,7 @@ export const TrustSection = () => {
               key={index} 
               className="bg-card rounded-2xl p-5 md:p-6 text-center shadow-soft border border-border hover:shadow-card hover:-translate-y-1 transition-all duration-300"
             >
-              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${stat.color === 'text-primary' ? 'bg-primary/10' : 'bg-accent/10'} mb-3`}>
+              <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${stat.color === 'text-primary' ? 'bg-primary/10' : stat.color === 'text-heart' ? 'bg-heart-light' : 'bg-accent/10'} mb-3`}>
                 <stat.icon className={`h-6 w-6 ${stat.color}`} />
               </div>
               <div className="text-2xl md:text-3xl font-bold mb-1">{stat.value}</div>

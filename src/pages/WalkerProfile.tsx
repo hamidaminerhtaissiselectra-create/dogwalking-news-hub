@@ -356,9 +356,9 @@ const WalkerProfilePage = () => {
                           variant="outline"
                           size="icon"
                           onClick={toggleFavorite}
-                          className={isFavorite ? 'text-primary border-primary' : ''}
+                          className={isFavorite ? 'text-heart border-heart' : ''}
                         >
-                          <Heart className={`h-5 w-5 ${isFavorite ? 'fill-current' : ''}`} />
+                          <Heart className={`h-5 w-5 ${isFavorite ? 'fill-heart' : ''}`} />
                         </Button>
                         <Button variant="outline" onClick={startConversation}>
                           <MessageCircle className="h-4 w-4 mr-2" />
