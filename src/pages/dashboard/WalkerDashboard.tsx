@@ -184,81 +184,33 @@ const WalkerDashboardPage = () => {
       />
       <Header />
       
-      <main className="container mx-auto px-4 py-8">
-        {/* Identification claire de l'espace */}
-        <div className="mb-4 flex items-center gap-2">
-          <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent/10 text-accent font-semibold text-sm">
-            <User className="h-4 w-4" />
-            Espace Promeneur
-          </span>
-        </div>
-
-        {/* Hero Section - Fond clair */}
-        <motion.section 
-          initial={{ opacity: 0, y: 20 }}
+      <main className="container mx-auto px-4 py-6">
+        {/* Simple Header - Mobile First */}
+        <motion.div 
+          initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="relative mb-10 rounded-[2.5rem] overflow-hidden bg-gradient-to-br from-accent/10 via-accent/5 to-background border border-border min-h-[200px] flex items-center"
+          className="text-center mb-6"
         >
-          <div className="absolute inset-0 z-0">
-            <img 
-              src={heroImage} 
-              alt="Walker Dashboard Hero" 
-              className="w-full h-full object-cover opacity-10"
-            />
-          </div>
-          
-          <div className="relative z-10 p-8 md:p-12 w-full flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex items-center gap-6">
-              <div className="relative">
-                <Avatar className="h-20 w-20 md:h-24 md:w-24 border-4 border-background shadow-xl">
-                  <AvatarImage src={profile?.avatar_url} />
-                  <AvatarFallback className="text-2xl bg-accent/10 text-accent">{profile?.first_name?.charAt(0) || 'P'}</AvatarFallback>
-                </Avatar>
-                <div className="absolute -bottom-2 -right-2 bg-primary h-6 w-6 rounded-full border-4 border-background" />
-              </div>
-              <div>
-                <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-foreground">Bonjour, {profile?.first_name || 'Promeneur'} 👋</h1>
-                <p className="text-muted-foreground mt-1 text-lg">Espace Promeneur • Prêt pour de nouvelles aventures ?</p>
-              </div>
-            </div>
-            
-            <div className="flex gap-3">
-              <Button onClick={() => setCurrentTab('missions')} className="gap-2 shadow-lg bg-primary hover:bg-primary/90">
-                <Calendar className="h-4 w-4" />
-                {stats.pendingRequests > 0 ? `${stats.pendingRequests} demande(s)` : 'Mes missions'}
-              </Button>
-            </div>
-          </div>
-        </motion.section>
+          <h1 className="text-2xl font-bold text-foreground">Tableau de bord</h1>
+        </motion.div>
 
-        {/* Verification Alert */}
+        {/* Verification Alert - Compact */}
         <AnimatePresence>
           {!walkerProfile?.verified && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="mb-6"
+              className="mb-4"
             >
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl border border-accent/20 bg-accent/5">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-full bg-accent/10 flex items-center justify-center">
-                    <Sparkles className="h-7 w-7 text-accent" />
-                  </div>
-                  <div>
-                    <p className="font-semibold text-lg text-foreground">Compte en cours de vérification</p>
-                    <p className="text-sm text-muted-foreground">Soumettez vos documents pour recevoir plus de demandes</p>
-                  </div>
+              <div className="flex items-center justify-between gap-3 p-3 rounded-xl border border-accent/20 bg-accent/5">
+                <div className="flex items-center gap-3 flex-1">
+                  <Sparkles className="h-5 w-5 text-accent flex-shrink-0" />
+                  <span className="text-sm font-medium">Complétez votre vérification</span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-3">
-                    <Progress value={verificationProgress()} className="w-28 h-3" />
-                    <span className="text-sm font-bold text-accent">{verificationProgress()}%</span>
-                  </div>
-                  <Button variant="outline" size="sm" onClick={() => setCurrentTab('profil')} className="gap-2 border-accent/20 hover:bg-accent/10">
-                    Compléter <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </div>
+                <Button variant="ghost" size="sm" onClick={() => setCurrentTab('profil')} className="text-accent">
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
               </div>
             </motion.div>
           )}
