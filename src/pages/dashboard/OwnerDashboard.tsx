@@ -30,10 +30,10 @@ const ProfileTab = lazy(() => import("@/components/dashboard/owner/ProfileTab"))
 import heroImage from "@/assets/pages/dashboard-owner-hero.jpg";
 
 const TABS = [
-  { id: "apercu", label: "Accueil", icon: Search, description: "Statistiques et alertes" },
-  { id: "reservations", label: "Missions", icon: MessageCircle, description: "Historique et à venir" },
-  { id: "calendar", label: "Calendrier", icon: Calendar, description: "Planning des promenades" },
-  { id: "profil", label: "Profil", icon: User, description: "Compte et sécurité" },
+  { id: "apercu", label: "Accueil", icon: Search, description: "Accueil" },
+  { id: "promeneurs", label: "Promeneurs", icon: Dog, description: "Trouver un promeneur" },
+  { id: "messages", label: "Messages", icon: MessageCircle, description: "Conversations" },
+  { id: "profil", label: "Profil", icon: User, description: "Mon compte" },
 ] as const;
 
 // Internal mapping for mobile tabs to actual content tabs if needed
