@@ -6,6 +6,9 @@ import RecommendedWalkers from "./RecommendedWalkers";
 import ReferralBanner from "./ReferralBanner";
 import MyPets from "./MyPets";
 import ActiveWalk from "./ActiveWalk";
+import UpcomingBookingsWidget from "./UpcomingBookingsWidget";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Calendar, Dog, Euro, Heart, TrendingUp } from "lucide-react";
 
 interface OverviewTabProps {
   stats: {
@@ -102,8 +105,56 @@ const OverviewTab = ({ stats, profile, onNavigate }: OverviewTabProps) => {
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="space-y-2"
+      className="space-y-6"
     >
+      {/* Stats rapides */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="pt-4 pb-3 px-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-2xl font-bold">{stats.totalBookings}</p>
+                <p className="text-xs text-muted-foreground">Réservations</p>
+              </div>
+              <Calendar className="h-8 w-8 text-primary/20" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="pt-4 pb-3 px-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-2xl font-bold">{stats.totalDogs}</p>
+                <p className="text-xs text-muted-foreground">Chiens</p>
+              </div>
+              <Dog className="h-8 w-8 text-primary/20" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="pt-4 pb-3 px-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-2xl font-bold">{stats.totalSpent.toFixed(0)}€</p>
+                <p className="text-xs text-muted-foreground">Dépensé</p>
+              </div>
+              <Euro className="h-8 w-8 text-primary/20" />
+            </div>
+          </CardContent>
+        </Card>
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardContent className="pt-4 pb-3 px-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-2xl font-bold">{stats.totalFavorites}</p>
+                <p className="text-xs text-muted-foreground">Favoris</p>
+              </div>
+              <Heart className="h-8 w-8 text-heart/20 fill-heart/10" />
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
       {/* Barre de recherche rapide */}
       <QuickSearchBar />
 
@@ -118,6 +169,12 @@ const OverviewTab = ({ stats, profile, onNavigate }: OverviewTabProps) => {
           speed={3.8}
         />
       )}
+
+      {/* Prochaines réservations */}
+      <UpcomingBookingsWidget 
+        limit={3} 
+        onViewAll={() => onNavigate('reservations')} 
+      />
 
       {/* Promeneurs recommandés */}
       <RecommendedWalkers walkers={walkers} />

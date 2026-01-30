@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Progress } from "@/components/ui/progress";
 import { 
   LayoutDashboard, Calendar, Euro, Clock, MessageCircle, 
-  BarChart3, User, Sparkles, ArrowRight, Wallet, Search
+  BarChart3, User, Sparkles, ArrowRight, Wallet, Search, FileText
 } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -25,6 +25,7 @@ const WalkerAvailabilityTab = lazy(() => import("@/components/dashboard/walker/A
 const WalkerMessagesTab = lazy(() => import("@/components/dashboard/walker/MessagesTab"));
 const WalkerPerformanceTab = lazy(() => import("@/components/dashboard/walker/PerformanceTab"));
 const WalkerProfileTab = lazy(() => import("@/components/dashboard/walker/ProfileTab"));
+const WalkerInvoicesTab = lazy(() => import("@/components/dashboard/walker/InvoicesTab"));
 
 import heroImage from "@/assets/pages/dashboard-walker-hero.jpg";
 
@@ -36,7 +37,7 @@ const TABS = [
   { id: "profil", label: "Profil", icon: User, description: "Mon compte" },
 ] as const;
 
-type TabId = typeof TABS[number]["id"] | "disponibilites" | "performance";
+type TabId = typeof TABS[number]["id"] | "disponibilites" | "performance" | "facturation";
 
 const TabLoader = () => (
   <div className="flex items-center justify-center h-64">
@@ -239,6 +240,9 @@ const WalkerDashboardPage = () => {
                 <TabsTrigger value="performance" className="flex-shrink-0 gap-2 py-3 px-4 rounded-xl">
                   <BarChart3 className="h-4 w-4" /> Performance
                 </TabsTrigger>
+                <TabsTrigger value="facturation" className="flex-shrink-0 gap-2 py-3 px-4 rounded-xl">
+                  <FileText className="h-4 w-4" /> Factures
+                </TabsTrigger>
                 <TabsTrigger value="profil" className="flex-shrink-0 gap-2 py-3 px-4 rounded-xl">
                   <User className="h-4 w-4" /> Profil
                 </TabsTrigger>
@@ -264,6 +268,7 @@ const WalkerDashboardPage = () => {
                 {currentTab === "disponibilites" && <WalkerAvailabilityTab walkerProfile={walkerProfile} />}
                 {currentTab === "messages" && <WalkerMessagesTab />}
                 {currentTab === "performance" && <WalkerPerformanceTab stats={stats} />}
+                {currentTab === "facturation" && <WalkerInvoicesTab />}
                 {currentTab === "profil" && <WalkerProfileTab profile={profile} walkerProfile={walkerProfile} />}
               </Suspense>
             </motion.div>
@@ -274,7 +279,7 @@ const WalkerDashboardPage = () => {
       {/* Mobile Tab Bar - Show first 4 tabs on mobile */}
       <MobileTabBar 
         tabs={TABS.slice(0, 4).map(t => ({ ...t }))} 
-        activeTab={currentTab === "disponibilites" || currentTab === "performance" ? "apercu" : currentTab} 
+        activeTab={currentTab === "disponibilites" || currentTab === "performance" || currentTab === "facturation" ? "apercu" : currentTab} 
         onTabChange={(id) => setCurrentTab(id as TabId)} 
       />
 
