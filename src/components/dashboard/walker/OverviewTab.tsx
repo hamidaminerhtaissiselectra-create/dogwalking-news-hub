@@ -6,6 +6,9 @@ import WeekCalendar from "./WeekCalendar";
 import TodayMissions from "./TodayMissions";
 import WalkerProfileHeader from "./WalkerProfileHeader";
 import WalkerQuickStats from "./WalkerQuickStats";
+import BadgesDisplay from "./BadgesDisplay";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Award } from "lucide-react";
 
 interface OverviewTabProps {
   stats: { 
@@ -120,7 +123,7 @@ const WalkerOverviewTab = ({ stats, walkerProfile, onNavigate }: OverviewTabProp
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="space-y-2"
+      className="space-y-4"
     >
       {/* En-tête profil avec progression */}
       <WalkerProfileHeader
@@ -139,6 +142,24 @@ const WalkerOverviewTab = ({ stats, walkerProfile, onNavigate }: OverviewTabProp
         totalReviews={stats.totalReviews}
         pendingRequests={stats.pendingRequests}
       />
+
+      {/* Badges de certification */}
+      <Card className="shadow-lg">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg flex items-center gap-2">
+            <Award className="h-5 w-5 text-amber-500" />
+            Mes Badges
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <BadgesDisplay
+            totalWalks={stats.totalWalks}
+            averageRating={stats.averageRating}
+            isVerified={walkerProfile?.verified || false}
+            totalReviews={stats.totalReviews}
+          />
+        </CardContent>
+      </Card>
 
       {/* Calendrier semaine */}
       <WeekCalendar
