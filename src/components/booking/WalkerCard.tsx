@@ -82,15 +82,15 @@ export const WalkerCard = ({
               size="icon"
               className={`absolute top-3 right-3 z-10 rounded-full transition-all ${
                 isFavorite 
-                  ? 'text-primary bg-primary/10 hover:bg-primary/20' 
-                  : 'text-muted-foreground hover:text-primary hover:bg-primary/10'
+                  ? 'text-heart bg-heart-light hover:bg-heart/20' 
+                  : 'text-muted-foreground hover:text-heart hover:bg-heart-light'
               }`}
               onClick={(e) => {
                 e.stopPropagation();
                 onFavorite?.(walker.user_id);
               }}
             >
-              <Heart className={`h-5 w-5 ${isFavorite ? 'fill-primary' : ''}`} />
+              <Heart className={`h-5 w-5 ${isFavorite ? 'fill-heart' : ''}`} />
             </Button>
             
             {/* Content */}

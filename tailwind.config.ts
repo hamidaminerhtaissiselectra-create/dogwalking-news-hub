@@ -24,6 +24,10 @@ export default {
         },
         warm: "hsl(var(--warm-beige))",
         earthy: "hsl(var(--earthy-brown))",
+        heart: {
+          DEFAULT: "hsl(var(--heart))",
+          light: "hsl(var(--heart-light))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

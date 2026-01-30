@@ -177,8 +177,8 @@ const OverviewTab = ({ stats, profile, onNavigate }: OverviewTabProps) => {
         <Card className="group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">Favoris</CardTitle>
-            <div className="w-11 h-11 rounded-2xl bg-primary/15 flex items-center justify-center group-hover:scale-110 transition-transform">
-              <Heart className="h-5 w-5 text-primary fill-primary/20" />
+            <div className="w-11 h-11 rounded-2xl bg-heart-light flex items-center justify-center group-hover:scale-110 transition-transform">
+              <Heart className="h-5 w-5 text-heart fill-heart-light" />
             </div>
           </CardHeader>
           <CardContent>
