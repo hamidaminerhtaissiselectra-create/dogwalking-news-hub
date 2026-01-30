@@ -39,7 +39,7 @@ const OverviewTab = ({ stats, profile, onNavigate }: OverviewTabProps) => {
     const [dogsRes, walkersRes, bookingsRes] = await Promise.all([
       supabase.from('dogs').select('*').eq('owner_id', session.user.id).limit(5),
       supabase.from('walker_profiles')
-        .select('*, profiles!inner(first_name, avatar_url, city)')
+        .select('*')
         .eq('verified', true)
         .order('rating', { ascending: false })
         .limit(4),
@@ -56,14 +56,28 @@ const OverviewTab = ({ stats, profile, onNavigate }: OverviewTabProps) => {
       photoUrl: d.photo_url
     })) || []);
 
-    setWalkers(walkersRes.data?.map(w => ({
-      id: w.user_id,
-      name: w.profiles?.first_name || 'Promeneur',
-      photoUrl: w.profiles?.avatar_url,
-      rating: w.rating || 5.0,
-      verified: w.verified,
-      city: w.profiles?.city
-    })) || []);
+    // Fetch profiles for walkers
+    if (walkersRes.data && walkersRes.data.length > 0) {
+      const walkerUserIds = walkersRes.data.map(w => w.user_id);
+      const { data: profilesData } = await supabase
+        .from('profiles')
+        .select('id, first_name, avatar_url, city')
+        .in('id', walkerUserIds);
+      
+      const profileMap = new Map(profilesData?.map(p => [p.id, p]) || []);
+      
+      setWalkers(walkersRes.data.map(w => {
+        const profile = profileMap.get(w.user_id);
+        return {
+          id: w.user_id,
+          name: profile?.first_name || 'Promeneur',
+          photoUrl: profile?.avatar_url,
+          rating: w.rating || 5.0,
+          verified: w.verified,
+          city: profile?.city
+        };
+      }));
+    }
 
     if (bookingsRes.data?.[0]) {
       setActiveBooking(bookingsRes.data[0]);
