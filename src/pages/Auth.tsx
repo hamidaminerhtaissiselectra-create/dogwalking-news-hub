@@ -49,12 +49,12 @@ const Auth = () => {
     // Check if user is already logged in
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) {
-        handlePostAuthRedirect();
+        void handlePostAuthRedirect();
       }
     });
   }, [navigate]);
 
-  const handlePostAuthRedirect = () => {
+  const handlePostAuthRedirect = async () => {
     const storage = getSafeSessionStorage();
     // Check for pending booking
     const pendingBooking = storage.getItem('pendingBooking');
@@ -70,7 +70,15 @@ const Auth = () => {
       navigate(decodeURIComponent(redirectUrl));
       return;
     }
-    
+
+    // Default redirect depends on user type
+    const { data: { session } } = await supabase.auth.getSession();
+    const userType = session?.user?.user_metadata?.user_type as string | undefined;
+    if (userType === 'walker') {
+      navigate('/walker/dashboard');
+      return;
+    }
+
     navigate('/dashboard');
   };
 
@@ -101,7 +109,7 @@ const Auth = () => {
         title: "Connexion réussie",
         description: "Bienvenue sur DogWalking !",
       });
-      handlePostAuthRedirect();
+      await handlePostAuthRedirect();
     }
   };
 
@@ -166,7 +174,7 @@ const Auth = () => {
         title: "Inscription réussie !",
         description: `Bienvenue sur DogWalking en tant que ${selectedUserType === 'owner' ? 'propriétaire' : 'promeneur'} !`,
       });
-      handlePostAuthRedirect();
+      await handlePostAuthRedirect();
     }
   };
 
