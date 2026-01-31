@@ -209,6 +209,23 @@ src/
 
 ---
 
+## ✅ Tests & Dépannage (Connexion / Redirections / Dashboard)
+
+### Parcours de test conseillé (mobile d'abord)
+1. Ouvrir `/auth` et se connecter avec un compte **propriétaire** → redirection attendue vers `/dashboard`.
+2. Ouvrir le menu du header → vérifier que **Dashboard / Messages / Réservations** ouvrent bien les bons écrans.
+3. Se déconnecter puis se connecter avec un compte **promeneur** → accéder à `/walker/dashboard`.
+4. Vérifier que la **toolbar en bas** est visible sur **mobile, tablette ET desktop** (dans les dashboards uniquement).
+
+### Si “page blanche” sur le dashboard
+- Vérifier que vous voyez bien un état de chargement (spinner + texte). Si rien n’apparaît, c’était souvent un loader invisible.
+- Ouvrir la console navigateur et rechercher une erreur bloquante (redirection, lazy import, permissions Supabase/RLS).
+- En cas d’erreur Supabase (permissions), valider que les policies RLS autorisent bien le SELECT sur `profiles`, `dogs`, `bookings`, `notifications` pour l’utilisateur connecté.
+
+> Note: certaines fonctions (ex: géolocalisation / service worker) peuvent être bloquées par le navigateur en environnement sandbox; elles ne doivent pas empêcher l’accès au dashboard.
+
+---
+
 ## 📄 Licence
 
 MIT License - Voir [LICENSE](LICENSE)

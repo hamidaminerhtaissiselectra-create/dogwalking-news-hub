@@ -40,11 +40,14 @@ type TabId = "home" | "dogs" | "search" | "messages" | "profile" | "bookings" | 
 
 const TabLoader = () => (
   <div className="flex items-center justify-center h-48">
-    <motion.div 
-      className="w-8 h-8 border-3 border-heart border-t-transparent rounded-full"
-      animate={{ rotate: 360 }}
-      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-    />
+    <div className="flex flex-col items-center">
+      <motion.div 
+        className="w-10 h-10 border-4 border-heart border-t-transparent rounded-full"
+        animate={{ rotate: 360 }}
+        transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+      />
+      <p className="mt-3 text-sm text-muted-foreground">Chargement du dashboard…</p>
+    </div>
   </div>
 );
 

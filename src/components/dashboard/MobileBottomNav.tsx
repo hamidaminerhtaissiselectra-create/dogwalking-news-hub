@@ -27,7 +27,7 @@ const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
   const bgActive = variant === 'owner' ? 'bg-heart/10' : 'bg-primary/10';
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-border/50 z-50 md:hidden safe-area-inset-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 bg-background/95 backdrop-blur-xl border-t border-border/50 z-50 pb-[env(safe-area-inset-bottom)]">
       <div className="flex justify-around items-center h-16 px-2">
         {items.map((item) => {
           const isActive = activeItem === item.id;
