@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { getSafeSessionStorage } from "@/lib/safeStorage";
 import { Separator } from "@/components/ui/separator";
+import RoleChoiceDialog from "@/components/dashboard/shared/RoleChoiceDialog";
 
 // Hero image
 import heroImage from "@/assets/hero-dog-walking.jpg";
@@ -44,6 +45,9 @@ const Auth = () => {
   // User type selection for registration
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
   const [showUserTypeSelection, setShowUserTypeSelection] = useState(true);
+  
+  // Role choice dialog for user_type=both
+  const [showRoleChoice, setShowRoleChoice] = useState(false);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -74,6 +78,14 @@ const Auth = () => {
     // Default redirect depends on user type
     const { data: { session } } = await supabase.auth.getSession();
     const userType = session?.user?.user_metadata?.user_type as string | undefined;
+    
+    // If user_type is 'both', show a choice dialog
+    if (userType === 'both') {
+      setShowRoleChoice(true);
+      setLoading(false);
+      return;
+    }
+    
     if (userType === 'walker') {
       navigate('/walker/dashboard');
       return;
@@ -81,6 +93,16 @@ const Auth = () => {
 
     navigate('/dashboard');
   };
+
+  const handleRoleChoice = (role: 'owner' | 'walker') => {
+    setShowRoleChoice(false);
+    if (role === 'walker') {
+      navigate('/walker/dashboard');
+    } else {
+      navigate('/dashboard');
+    }
+  };
+
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -222,8 +244,10 @@ const Auth = () => {
   ];
 
   return (
-    <div className="min-h-screen flex">
-      {/* Left side - Image & Benefits */}
+    <>
+      <RoleChoiceDialog open={showRoleChoice} onChoice={handleRoleChoice} />
+      <div className="min-h-screen flex">
+        {/* Left side - Image & Benefits */}
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
         <img 
           src={heroImage} 
@@ -540,7 +564,8 @@ const Auth = () => {
           </Card>
         </motion.div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
