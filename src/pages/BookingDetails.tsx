@@ -14,6 +14,9 @@ import { motion } from "framer-motion";
 import { WalkProofUpload } from "@/components/booking/WalkProofUpload";
 import { ReportIncidentDialog } from "@/components/booking/ReportIncidentDialog";
 import { OpenDisputeDialog } from "@/components/booking/OpenDisputeDialog";
+import { MissionProofViewer } from "@/components/dashboard/owner/MissionProofViewer";
+import { MissionReport } from "@/components/dashboard/owner/MissionReport";
+import MissionStartButton from "@/components/dashboard/walker/MissionStartButton";
 
 const containerVariants = {
   hidden: { opacity: 0 },
@@ -295,17 +298,54 @@ const BookingDetails = () => {
             </motion.div>
           )}
           
-          {/* Walk Proofs Section */}
+          {/* Mission Report for completed bookings (Owner view) */}
+          {booking.status === 'completed' && currentUserId === booking.owner_id && (
+            <motion.div variants={itemVariants} className="mt-6">
+              <MissionReport bookingId={booking.id} />
+            </motion.div>
+          )}
+          
+          {/* Walk Proofs Section - Viewer for owner, Upload for walker */}
           {booking.status !== 'pending' && booking.status !== 'cancelled' && (
             <motion.div variants={itemVariants} className="mt-6">
-              <WalkProofUpload
-                bookingId={booking.id}
-                walkerId={booking.walker_id}
-                existingProofs={walkProofs}
-                isWalker={currentUserId === booking.walker_id}
-                onProofUploaded={fetchWalkProofs}
-                onProofValidated={fetchWalkProofs}
-              />
+              {currentUserId === booking.owner_id ? (
+                <MissionProofViewer
+                  bookingId={booking.id}
+                  isOwner={true}
+                  onProofValidated={fetchBooking}
+                />
+              ) : (
+                <WalkProofUpload
+                  bookingId={booking.id}
+                  walkerId={booking.walker_id}
+                  existingProofs={walkProofs}
+                  isWalker={currentUserId === booking.walker_id}
+                  onProofUploaded={fetchWalkProofs}
+                  onProofValidated={fetchWalkProofs}
+                />
+              )}
+            </motion.div>
+          )}
+          
+          {/* Mission Start/End Button for walker */}
+          {currentUserId === booking.walker_id && (booking.status === 'confirmed' || booking.status === 'in_progress') && (
+            <motion.div variants={itemVariants} className="mt-6">
+              <Card className="shadow-card">
+                <CardHeader>
+                  <CardTitle>Gestion de la mission</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <MissionStartButton
+                    bookingId={booking.id}
+                    walkerId={booking.walker_id}
+                    dogName={booking.dogs?.name || 'Chien'}
+                    ownerName="Propriétaire"
+                    status={booking.status}
+                    onMissionStarted={fetchBooking}
+                    onMissionEnded={fetchBooking}
+                  />
+                </CardContent>
+              </Card>
             </motion.div>
           )}
 
