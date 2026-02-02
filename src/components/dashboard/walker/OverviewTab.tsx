@@ -87,7 +87,10 @@ const WalkerOverviewTab = ({ stats, walkerProfile, onNavigate }: OverviewTabProp
           ownerName: ownerMap.get(b.owner_id)?.first_name || 'Propriétaire',
           ownerPhoto: ownerMap.get(b.owner_id)?.avatar_url,
           address: b.address || 'Adresse non spécifiée',
-          status: b.status
+          status: b.status,
+          walker_id: session.user.id,
+          duration_minutes: b.duration_minutes || 60,
+          started_at: b.status === 'in_progress' ? b.updated_at : undefined
         }));
       
       setMissions(todayMissions);
@@ -173,6 +176,7 @@ const WalkerOverviewTab = ({ stats, walkerProfile, onNavigate }: OverviewTabProp
         missions={missions}
         onStartMission={handleStartMission}
         selectedDate={selectedDate}
+        onRefresh={fetchData}
       />
     </motion.div>
   );
