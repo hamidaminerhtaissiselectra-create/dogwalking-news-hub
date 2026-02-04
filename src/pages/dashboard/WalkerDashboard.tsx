@@ -260,7 +260,7 @@ const WalkerDashboardPage = () => {
           icon={Euro} 
           value={`${stats.monthlyEarnings.toFixed(0)}€`} 
           label="Gains ce mois"
-          variant="primary"
+          variant="money"
           trend={stats.completedThisMonth > 0 ? { value: 12, isPositive: true } : undefined}
           onClick={() => setCurrentTab('earnings')}
         />
@@ -268,21 +268,21 @@ const WalkerDashboardPage = () => {
           icon={Calendar} 
           value={stats.upcomingMissions} 
           label="Missions à venir"
-          variant="accent"
+          variant="walker"
           onClick={() => setCurrentTab('missions')}
         />
         <StatCard 
           icon={Star} 
           value={stats.averageRating.toFixed(1)} 
           label={`${stats.totalReviews} avis`}
-          variant="heart"
+          variant="warning"
           onClick={() => setCurrentTab('performance')}
         />
         <StatCard 
           icon={TrendingUp} 
           value={stats.totalWalks} 
           label="Balades totales"
-          variant="default"
+          variant="success"
           onClick={() => setCurrentTab('performance')}
         />
       </div>
@@ -295,14 +295,14 @@ const WalkerDashboardPage = () => {
             icon={Clock} 
             label="Dispo" 
             onClick={() => setCurrentTab('availability')} 
-            variant="primary" 
+            variant="info" 
             size="sm" 
           />
           <QuickActionCard 
             icon={Calendar} 
             label="Planning" 
             onClick={() => setCurrentTab('missions')} 
-            variant="accent" 
+            variant="walker" 
             size="sm"
             badge={stats.pendingRequests > 0 ? stats.pendingRequests : undefined}
           />
@@ -310,14 +310,14 @@ const WalkerDashboardPage = () => {
             icon={FileText} 
             label="Factures" 
             onClick={() => setCurrentTab('invoices')} 
-            variant="muted" 
+            variant="violet" 
             size="sm" 
           />
           <QuickActionCard 
             icon={TrendingUp} 
             label="Stats" 
             onClick={() => setCurrentTab('performance')} 
-            variant="muted" 
+            variant="success" 
             size="sm" 
           />
         </div>

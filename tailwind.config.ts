@@ -28,6 +28,31 @@ export default {
           DEFAULT: "hsl(var(--heart))",
           light: "hsl(var(--heart-light))",
         },
+        // Vivid Dashboard Colors
+        walker: {
+          DEFAULT: "hsl(var(--walker-blue))",
+          light: "hsl(var(--walker-blue-light))",
+        },
+        owner: {
+          DEFAULT: "hsl(var(--owner-rose))",
+          light: "hsl(var(--owner-rose-light))",
+        },
+        success: {
+          DEFAULT: "hsl(var(--success-green))",
+          light: "hsl(var(--success-green-light))",
+        },
+        warning: {
+          DEFAULT: "hsl(var(--warning-amber))",
+          light: "hsl(var(--warning-amber-light))",
+        },
+        info: {
+          DEFAULT: "hsl(var(--info-cyan))",
+          light: "hsl(var(--info-cyan-light))",
+        },
+        violet: {
+          DEFAULT: "hsl(var(--violet))",
+          light: "hsl(var(--violet-light))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -76,11 +101,16 @@ export default {
         'gradient-primary': 'var(--gradient-primary)',
         'gradient-hero': 'var(--gradient-hero)',
         'gradient-card': 'var(--gradient-card)',
+        'gradient-walker': 'var(--gradient-walker)',
+        'gradient-owner': 'var(--gradient-owner)',
+        'gradient-success': 'var(--gradient-success)',
+        'gradient-money': 'var(--gradient-money)',
       },
       boxShadow: {
         'soft': 'var(--shadow-soft)',
         'card': 'var(--shadow-card)',
         'button': 'var(--shadow-button)',
+        'vivid': 'var(--shadow-vivid)',
       },
       borderRadius: {
         lg: "var(--radius)",

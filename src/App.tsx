@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, useLocation, Navigate } from "react-route
 import { HelmetProvider } from "react-helmet-async";
 import { useEffect, lazy, Suspense } from "react";
 import { InstallPrompt } from "@/components/pwa/InstallPrompt";
+import { PushNotificationPrompt } from "@/components/notifications/PushNotificationPrompt";
 import Index from "./pages/Index";
 import ServicePage from "./pages/ServicePage";
 import Auth from "./pages/Auth";
@@ -63,6 +64,7 @@ const App = () => (
         <BrowserRouter>
           <ScrollToTop />
           <InstallPrompt />
+          <PushNotificationPrompt />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/dashboard-preview" element={<DashboardPreview />} />

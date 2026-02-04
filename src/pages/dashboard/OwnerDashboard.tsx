@@ -198,14 +198,14 @@ const OwnerDashboard = () => {
           icon={Calendar} 
           value={stats.upcomingBookings} 
           label="Réservations à venir"
-          variant="heart"
+          variant="owner"
           onClick={() => setCurrentTab('bookings')}
         />
         <StatCard 
           icon={Dog} 
           value={stats.totalDogs} 
           label="Mes chiens"
-          variant="primary"
+          variant="success"
           onClick={() => setCurrentTab('dogs')}
         />
         <StatCard 
@@ -219,7 +219,7 @@ const OwnerDashboard = () => {
           icon={Euro} 
           value={`${stats.totalSpent.toFixed(0)}€`} 
           label="Total dépensé"
-          variant="accent"
+          variant="money"
           onClick={() => setCurrentTab('invoices')}
         />
       </div>
@@ -228,10 +228,10 @@ const OwnerDashboard = () => {
       <div>
         <h3 className="text-sm font-semibold text-muted-foreground mb-3">ACTIONS RAPIDES</h3>
         <div className="grid grid-cols-4 gap-2">
-          <QuickActionCard icon={Plus} label="Ajouter chien" onClick={() => setCurrentTab('dogs')} variant="primary" size="sm" />
-          <QuickActionCard icon={Search} label="Promeneur" onClick={() => setCurrentTab('search')} variant="accent" size="sm" />
-          <QuickActionCard icon={Calendar} label="Réserver" onClick={() => navigate('/find-walkers')} variant="heart" size="sm" />
-          <QuickActionCard icon={Gift} label="Parrainage" onClick={() => setCurrentTab('referral')} variant="muted" size="sm" />
+          <QuickActionCard icon={Plus} label="Ajouter chien" onClick={() => setCurrentTab('dogs')} variant="success" size="sm" />
+          <QuickActionCard icon={Search} label="Promeneur" onClick={() => setCurrentTab('search')} variant="walker" size="sm" />
+          <QuickActionCard icon={Calendar} label="Réserver" onClick={() => navigate('/find-walkers')} variant="owner" size="sm" />
+          <QuickActionCard icon={Gift} label="Parrainage" onClick={() => setCurrentTab('referral')} variant="violet" size="sm" />
         </div>
       </div>
 

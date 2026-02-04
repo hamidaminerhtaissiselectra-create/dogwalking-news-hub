@@ -1,25 +1,16 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
-import { MapPin, Heart, Dog, Cat, Search, Loader2 } from "lucide-react";
+import { MapPin, Heart, Search } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useGeolocation } from "@/hooks/useGeolocation";
 
 export const SearchForm = () => {
   const navigate = useNavigate();
-  const { location, loading: geoLoading } = useGeolocation();
   const [animalType, setAnimalType] = useState("chien");
   const [selectedService, setSelectedService] = useState("");
   const [address, setAddress] = useState("");
-
-  // Pre-fill address with detected city
-  useEffect(() => {
-    if (location?.city && !address) {
-      setAddress(location.city);
-    }
-  }, [location, address]);
 
   const servicesAbsent = [
     { id: "hebergement_nuit", label: "Hébergement", icon: Heart },
@@ -126,20 +117,12 @@ export const SearchForm = () => {
 
       {/* Adresse */}
       <div className="mb-6">
-        <Label className="text-base font-medium mb-3 block flex items-center gap-2">
-          Adresse
-          {geoLoading && <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />}
-          {location?.city && !geoLoading && (
-            <span className="text-xs text-muted-foreground font-normal">
-              (détecté : {location.city})
-            </span>
-          )}
-        </Label>
+        <Label className="text-base font-medium mb-3 block">Adresse</Label>
         <div className="relative">
           <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-primary" />
           <Input 
             type="text" 
-            placeholder={geoLoading ? "Détection de votre ville..." : "Ajoutez votre adresse"} 
+            placeholder="Ajoutez votre adresse ou ville" 
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             className="pl-12 h-14 text-base rounded-xl border-2"
