@@ -11,7 +11,7 @@ interface StatCardProps {
     value: number;
     isPositive: boolean;
   };
-  variant?: 'default' | 'primary' | 'accent' | 'heart';
+  variant?: 'default' | 'primary' | 'accent' | 'heart' | 'walker' | 'owner' | 'success' | 'warning' | 'info' | 'violet' | 'money';
   onClick?: () => void;
 }
 
@@ -23,47 +23,106 @@ const StatCard: React.FC<StatCardProps> = ({
   variant = 'default',
   onClick
 }) => {
-  const iconBg = {
-    default: 'bg-muted',
-    primary: 'bg-primary/10',
-    accent: 'bg-accent/10',
-    heart: 'bg-heart/10'
+  const variantStyles = {
+    default: {
+      bg: 'bg-muted',
+      iconBg: 'bg-muted-foreground/10',
+      iconColor: 'text-muted-foreground',
+      border: 'border-border/50',
+    },
+    primary: {
+      bg: 'bg-gradient-to-br from-primary/10 to-primary/5',
+      iconBg: 'bg-primary/20',
+      iconColor: 'text-primary',
+      border: 'border-primary/20',
+    },
+    accent: {
+      bg: 'bg-gradient-to-br from-accent/10 to-accent/5',
+      iconBg: 'bg-accent/20',
+      iconColor: 'text-accent',
+      border: 'border-accent/20',
+    },
+    heart: {
+      bg: 'bg-gradient-to-br from-heart/10 to-heart/5',
+      iconBg: 'bg-heart/20',
+      iconColor: 'text-heart',
+      border: 'border-heart/20',
+    },
+    walker: {
+      bg: 'bg-gradient-to-br from-walker/15 to-info/10',
+      iconBg: 'bg-walker/25',
+      iconColor: 'text-walker',
+      border: 'border-walker/30',
+    },
+    owner: {
+      bg: 'bg-gradient-to-br from-owner/15 to-heart/10',
+      iconBg: 'bg-owner/25',
+      iconColor: 'text-owner',
+      border: 'border-owner/30',
+    },
+    success: {
+      bg: 'bg-gradient-to-br from-success/15 to-primary/10',
+      iconBg: 'bg-success/25',
+      iconColor: 'text-success',
+      border: 'border-success/30',
+    },
+    warning: {
+      bg: 'bg-gradient-to-br from-warning/15 to-warning/5',
+      iconBg: 'bg-warning/25',
+      iconColor: 'text-warning',
+      border: 'border-warning/30',
+    },
+    info: {
+      bg: 'bg-gradient-to-br from-info/15 to-info/5',
+      iconBg: 'bg-info/25',
+      iconColor: 'text-info',
+      border: 'border-info/30',
+    },
+    violet: {
+      bg: 'bg-gradient-to-br from-violet/15 to-violet/5',
+      iconBg: 'bg-violet/25',
+      iconColor: 'text-violet',
+      border: 'border-violet/30',
+    },
+    money: {
+      bg: 'bg-gradient-to-br from-warning/20 to-success/10',
+      iconBg: 'bg-gradient-to-br from-warning/30 to-success/20',
+      iconColor: 'text-warning',
+      border: 'border-warning/30',
+    },
   };
 
-  const iconColor = {
-    default: 'text-muted-foreground',
-    primary: 'text-primary',
-    accent: 'text-accent',
-    heart: 'text-heart'
-  };
+  const styles = variantStyles[variant];
 
   return (
     <motion.div
-      whileHover={onClick ? { scale: 1.02 } : undefined}
+      whileHover={onClick ? { scale: 1.03, y: -2 } : undefined}
       whileTap={onClick ? { scale: 0.98 } : undefined}
       onClick={onClick}
       className={cn(
-        "bg-card rounded-2xl p-4 border border-border/50 shadow-sm",
-        onClick && "cursor-pointer hover:shadow-md transition-shadow"
+        "rounded-2xl p-4 border shadow-sm transition-all",
+        styles.bg,
+        styles.border,
+        onClick && "cursor-pointer hover:shadow-lg"
       )}
     >
       <div className="flex items-start justify-between mb-2">
-        <div className={cn("w-10 h-10 rounded-xl flex items-center justify-center", iconBg[variant])}>
-          <Icon className={cn("h-5 w-5", iconColor[variant])} />
+        <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center shadow-sm", styles.iconBg)}>
+          <Icon className={cn("h-5 w-5", styles.iconColor)} />
         </div>
         {trend && (
           <span className={cn(
-            "text-xs font-semibold px-2 py-0.5 rounded-full",
+            "text-xs font-bold px-2.5 py-1 rounded-full shadow-sm",
             trend.isPositive 
-              ? "bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400" 
-              : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+              ? "bg-success/20 text-success" 
+              : "bg-destructive/20 text-destructive"
           )}>
-            {trend.isPositive ? '+' : ''}{trend.value}%
+            {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
           </span>
         )}
       </div>
       <p className="text-2xl font-bold text-foreground">{value}</p>
-      <p className="text-xs text-muted-foreground mt-0.5">{label}</p>
+      <p className="text-xs text-muted-foreground mt-0.5 font-medium">{label}</p>
     </motion.div>
   );
 };

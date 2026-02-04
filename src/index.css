@@ -48,15 +48,34 @@ All colors MUST be HSL.
     --heart: 350 89% 60%;
     --heart-light: 350 89% 90%;
 
+    /* Dashboard Vivid Colors */
+    --walker-blue: 217 91% 60%;
+    --walker-blue-light: 217 91% 93%;
+    --owner-rose: 338 76% 58%;
+    --owner-rose-light: 338 76% 93%;
+    --success-green: 142 71% 45%;
+    --success-green-light: 142 71% 93%;
+    --warning-amber: 38 92% 50%;
+    --warning-amber-light: 38 92% 93%;
+    --info-cyan: 189 94% 43%;
+    --info-cyan-light: 189 94% 93%;
+    --violet: 262 83% 58%;
+    --violet-light: 262 83% 93%;
+
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--sage-green)), hsl(var(--ocean-blue)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--sage-green)) 0%, hsl(var(--ocean-blue)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--background)) 0%, hsl(var(--warm-beige)) 100%);
+    --gradient-walker: linear-gradient(135deg, hsl(var(--walker-blue)), hsl(var(--info-cyan)));
+    --gradient-owner: linear-gradient(135deg, hsl(var(--owner-rose)), hsl(var(--heart)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--success-green)), hsl(var(--sage-green)));
+    --gradient-money: linear-gradient(135deg, hsl(var(--warning-amber)), hsl(38 92% 60%));
 
     /* Shadows */
     --shadow-soft: 0 4px 20px -2px hsl(var(--sage-green) / 0.1);
     --shadow-card: 0 8px 30px -6px hsl(var(--sage-green) / 0.15);
     --shadow-button: 0 4px 15px -3px hsl(var(--sage-green) / 0.3);
+    --shadow-vivid: 0 8px 25px -5px;
 
     --radius: 0.5rem;
 
