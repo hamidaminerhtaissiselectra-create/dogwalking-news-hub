@@ -1,5 +1,5 @@
 import React from 'react';
-import { LucideIcon } from 'lucide-react';
+import { LucideIcon, TrendingUp, TrendingDown } from 'lucide-react';
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -7,123 +7,182 @@ interface StatCardProps {
   icon: LucideIcon;
   value: string | number;
   label: string;
+  variant?: 'primary' | 'accent' | 'heart' | 'muted' | 'walker' | 'owner' | 'success' | 'warning' | 'info' | 'violet' | 'money';
   trend?: {
     value: number;
     isPositive: boolean;
   };
-  variant?: 'default' | 'primary' | 'accent' | 'heart' | 'walker' | 'owner' | 'success' | 'warning' | 'info' | 'violet' | 'money';
   onClick?: () => void;
+  size?: 'sm' | 'md' | 'lg';
 }
 
 const StatCard: React.FC<StatCardProps> = ({
   icon: Icon,
   value,
   label,
+  variant = 'primary',
   trend,
-  variant = 'default',
-  onClick
+  onClick,
+  size = 'md'
 }) => {
-  const variantStyles = {
-    default: {
-      bg: 'bg-muted',
-      iconBg: 'bg-muted-foreground/10',
-      iconColor: 'text-muted-foreground',
-      border: 'border-border/50',
-    },
+  // Définition des variantes avec dégradés vifs
+  const variants = {
     primary: {
-      bg: 'bg-gradient-to-br from-primary/10 to-primary/5',
-      iconBg: 'bg-primary/20',
-      iconColor: 'text-primary',
-      border: 'border-primary/20',
+      card: 'bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5 border-primary/30 hover:border-primary/50',
+      iconBg: 'bg-gradient-to-br from-primary to-primary/80',
+      iconText: 'text-white',
+      value: 'text-primary',
+      shadow: 'hover:shadow-primary/25',
     },
     accent: {
-      bg: 'bg-gradient-to-br from-accent/10 to-accent/5',
-      iconBg: 'bg-accent/20',
-      iconColor: 'text-accent',
-      border: 'border-accent/20',
+      card: 'bg-gradient-to-br from-accent/20 via-accent/10 to-accent/5 border-accent/30 hover:border-accent/50',
+      iconBg: 'bg-gradient-to-br from-accent to-accent/80',
+      iconText: 'text-white',
+      value: 'text-accent',
+      shadow: 'hover:shadow-accent/25',
     },
     heart: {
-      bg: 'bg-gradient-to-br from-heart/10 to-heart/5',
-      iconBg: 'bg-heart/20',
-      iconColor: 'text-heart',
-      border: 'border-heart/20',
+      card: 'bg-gradient-to-br from-heart/20 via-heart/10 to-heart/5 border-heart/30 hover:border-heart/50',
+      iconBg: 'bg-gradient-to-br from-heart to-heart/80',
+      iconText: 'text-white',
+      value: 'text-heart',
+      shadow: 'hover:shadow-heart/25',
+    },
+    muted: {
+      card: 'bg-muted border-border hover:bg-muted/80',
+      iconBg: 'bg-muted-foreground/20',
+      iconText: 'text-muted-foreground',
+      value: 'text-foreground',
+      shadow: '',
     },
     walker: {
-      bg: 'bg-gradient-to-br from-walker/15 to-info/10',
-      iconBg: 'bg-walker/25',
-      iconColor: 'text-walker',
-      border: 'border-walker/30',
+      card: 'bg-gradient-to-br from-walker/25 via-walker/15 to-info/10 border-walker/40 hover:border-walker/60',
+      iconBg: 'bg-gradient-to-br from-walker to-info',
+      iconText: 'text-white',
+      value: 'text-walker',
+      shadow: 'hover:shadow-walker/30',
     },
     owner: {
-      bg: 'bg-gradient-to-br from-owner/15 to-heart/10',
-      iconBg: 'bg-owner/25',
-      iconColor: 'text-owner',
-      border: 'border-owner/30',
+      card: 'bg-gradient-to-br from-owner/25 via-owner/15 to-heart/10 border-owner/40 hover:border-owner/60',
+      iconBg: 'bg-gradient-to-br from-owner to-heart',
+      iconText: 'text-white',
+      value: 'text-owner',
+      shadow: 'hover:shadow-owner/30',
     },
     success: {
-      bg: 'bg-gradient-to-br from-success/15 to-primary/10',
-      iconBg: 'bg-success/25',
-      iconColor: 'text-success',
-      border: 'border-success/30',
+      card: 'bg-gradient-to-br from-success/25 via-success/15 to-primary/10 border-success/40 hover:border-success/60',
+      iconBg: 'bg-gradient-to-br from-success to-primary',
+      iconText: 'text-white',
+      value: 'text-success',
+      shadow: 'hover:shadow-success/30',
     },
     warning: {
-      bg: 'bg-gradient-to-br from-warning/15 to-warning/5',
-      iconBg: 'bg-warning/25',
-      iconColor: 'text-warning',
-      border: 'border-warning/30',
+      card: 'bg-gradient-to-br from-warning/25 via-warning/15 to-warning/5 border-warning/40 hover:border-warning/60',
+      iconBg: 'bg-gradient-to-br from-warning to-amber-600',
+      iconText: 'text-white',
+      value: 'text-warning',
+      shadow: 'hover:shadow-warning/30',
     },
     info: {
-      bg: 'bg-gradient-to-br from-info/15 to-info/5',
-      iconBg: 'bg-info/25',
-      iconColor: 'text-info',
-      border: 'border-info/30',
+      card: 'bg-gradient-to-br from-info/25 via-info/15 to-info/5 border-info/40 hover:border-info/60',
+      iconBg: 'bg-gradient-to-br from-info to-cyan-400',
+      iconText: 'text-white',
+      value: 'text-info',
+      shadow: 'hover:shadow-info/30',
     },
     violet: {
-      bg: 'bg-gradient-to-br from-violet/15 to-violet/5',
-      iconBg: 'bg-violet/25',
-      iconColor: 'text-violet',
-      border: 'border-violet/30',
+      card: 'bg-gradient-to-br from-violet/25 via-violet/15 to-violet/5 border-violet/40 hover:border-violet/60',
+      iconBg: 'bg-gradient-to-br from-violet to-purple-400',
+      iconText: 'text-white',
+      value: 'text-violet',
+      shadow: 'hover:shadow-violet/30',
     },
     money: {
-      bg: 'bg-gradient-to-br from-warning/20 to-success/10',
-      iconBg: 'bg-gradient-to-br from-warning/30 to-success/20',
-      iconColor: 'text-warning',
-      border: 'border-warning/30',
+      card: 'bg-gradient-to-br from-warning/30 via-amber-400/20 to-yellow-300/10 border-warning/50 hover:border-warning/70',
+      iconBg: 'bg-gradient-to-br from-amber-500 via-warning to-yellow-500',
+      iconText: 'text-white',
+      value: 'text-amber-600 dark:text-amber-400',
+      shadow: 'hover:shadow-amber-500/35',
     },
   };
 
-  const styles = variantStyles[variant];
+  const sizes = {
+    sm: {
+      card: 'p-3',
+      icon: 'w-8 h-8',
+      iconSize: 'h-4 w-4',
+      value: 'text-lg',
+      label: 'text-[10px]',
+    },
+    md: {
+      card: 'p-4',
+      icon: 'w-10 h-10',
+      iconSize: 'h-5 w-5',
+      value: 'text-2xl',
+      label: 'text-xs',
+    },
+    lg: {
+      card: 'p-5',
+      icon: 'w-12 h-12',
+      iconSize: 'h-6 w-6',
+      value: 'text-3xl',
+      label: 'text-sm',
+    },
+  };
+
+  const style = variants[variant];
+  const sizeStyle = sizes[size];
 
   return (
-    <motion.div
-      whileHover={onClick ? { scale: 1.03, y: -2 } : undefined}
-      whileTap={onClick ? { scale: 0.98 } : undefined}
+    <motion.button
+      whileHover={{ scale: 1.03, y: -4 }}
+      whileTap={{ scale: 0.97 }}
       onClick={onClick}
       className={cn(
-        "rounded-2xl p-4 border shadow-sm transition-all",
-        styles.bg,
-        styles.border,
-        onClick && "cursor-pointer hover:shadow-lg"
+        "rounded-2xl border transition-all duration-300 text-left w-full relative overflow-hidden group",
+        style.card,
+        sizeStyle.card,
+        style.shadow,
+        "shadow-md hover:shadow-xl"
       )}
     >
-      <div className="flex items-start justify-between mb-2">
-        <div className={cn("w-11 h-11 rounded-xl flex items-center justify-center shadow-sm", styles.iconBg)}>
-          <Icon className={cn("h-5 w-5", styles.iconColor)} />
-        </div>
-        {trend && (
-          <span className={cn(
-            "text-xs font-bold px-2.5 py-1 rounded-full shadow-sm",
-            trend.isPositive 
-              ? "bg-success/20 text-success" 
-              : "bg-destructive/20 text-destructive"
-          )}>
-            {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
+      {/* Effet de brillance au survol */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+      
+      <div className="flex items-start justify-between relative z-10">
+        <div className="flex flex-col gap-1">
+          <span className={cn("font-bold leading-tight", sizeStyle.value, style.value)}>
+            {value}
           </span>
-        )}
+          <span className={cn("text-muted-foreground font-medium", sizeStyle.label)}>
+            {label}
+          </span>
+          {trend && (
+            <div className={cn(
+              "flex items-center gap-1 mt-1",
+              trend.isPositive ? "text-success" : "text-destructive"
+            )}>
+              {trend.isPositive ? (
+                <TrendingUp className="h-3 w-3" />
+              ) : (
+                <TrendingDown className="h-3 w-3" />
+              )}
+              <span className="text-[10px] font-semibold">
+                {trend.isPositive ? '+' : ''}{trend.value}%
+              </span>
+            </div>
+          )}
+        </div>
+        
+        <div className={cn(
+          "rounded-xl flex items-center justify-center shadow-lg transition-transform group-hover:scale-110 group-hover:rotate-3",
+          style.iconBg,
+          sizeStyle.icon
+        )}>
+          <Icon className={cn(sizeStyle.iconSize, style.iconText, "drop-shadow-sm")} />
+        </div>
       </div>
-      <p className="text-2xl font-bold text-foreground">{value}</p>
-      <p className="text-xs text-muted-foreground mt-0.5 font-medium">{label}</p>
-    </motion.div>
+    </motion.button>
   );
 };
 

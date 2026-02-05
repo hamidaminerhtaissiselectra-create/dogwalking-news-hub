@@ -192,13 +192,14 @@ const OwnerDashboard = () => {
         </Card>
       )}
 
-      {/* Stats Grid */}
+      {/* Stats Grid - Couleurs vives pour navigation intuitive */}
       <div className="grid grid-cols-2 gap-3">
         <StatCard 
           icon={Calendar} 
           value={stats.upcomingBookings} 
           label="Réservations à venir"
           variant="owner"
+          size="md"
           onClick={() => setCurrentTab('bookings')}
         />
         <StatCard 
@@ -206,6 +207,7 @@ const OwnerDashboard = () => {
           value={stats.totalDogs} 
           label="Mes chiens"
           variant="success"
+          size="md"
           onClick={() => setCurrentTab('dogs')}
         />
         <StatCard 
@@ -213,6 +215,7 @@ const OwnerDashboard = () => {
           value={stats.totalFavorites} 
           label="Promeneurs favoris"
           variant="heart"
+          size="md"
           onClick={() => setCurrentTab('favorites')}
         />
         <StatCard 
@@ -220,18 +223,43 @@ const OwnerDashboard = () => {
           value={`${stats.totalSpent.toFixed(0)}€`} 
           label="Total dépensé"
           variant="money"
+          size="md"
           onClick={() => setCurrentTab('invoices')}
         />
       </div>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Boutons colorés interactifs */}
       <div>
-        <h3 className="text-sm font-semibold text-muted-foreground mb-3">ACTIONS RAPIDES</h3>
-        <div className="grid grid-cols-4 gap-2">
-          <QuickActionCard icon={Plus} label="Ajouter chien" onClick={() => setCurrentTab('dogs')} variant="success" size="sm" />
-          <QuickActionCard icon={Search} label="Promeneur" onClick={() => setCurrentTab('search')} variant="walker" size="sm" />
-          <QuickActionCard icon={Calendar} label="Réserver" onClick={() => navigate('/find-walkers')} variant="owner" size="sm" />
-          <QuickActionCard icon={Gift} label="Parrainage" onClick={() => setCurrentTab('referral')} variant="violet" size="sm" />
+        <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">Actions rapides</h3>
+        <div className="grid grid-cols-4 gap-3">
+          <QuickActionCard 
+            icon={Plus} 
+            label="Ajouter" 
+            onClick={() => setCurrentTab('dogs')} 
+            variant="success" 
+            size="sm" 
+          />
+          <QuickActionCard 
+            icon={Search} 
+            label="Chercher" 
+            onClick={() => setCurrentTab('search')} 
+            variant="walker" 
+            size="sm" 
+          />
+          <QuickActionCard 
+            icon={Calendar} 
+            label="Réserver" 
+            onClick={() => navigate('/find-walkers')} 
+            variant="owner" 
+            size="sm" 
+          />
+          <QuickActionCard 
+            icon={Gift} 
+            label="Parrainage" 
+            onClick={() => setCurrentTab('referral')} 
+            variant="violet" 
+            size="sm" 
+          />
         </div>
       </div>
 
