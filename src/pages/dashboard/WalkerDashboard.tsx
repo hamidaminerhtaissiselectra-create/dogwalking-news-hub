@@ -236,17 +236,17 @@ const WalkerDashboardPage = () => {
     >
       {/* Verification Banner */}
       {!walkerProfile?.verified && (
-        <Card className="border-amber-500/20 bg-amber-500/5">
+        <Card className="border-warning/20 bg-warning/5">
           <CardContent className="p-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-amber-500/10 flex items-center justify-center">
-                <CheckCircle className="h-5 w-5 text-amber-600" />
+              <div className="w-10 h-10 rounded-full bg-warning/10 flex items-center justify-center">
+                <CheckCircle className="h-5 w-5 text-warning" />
               </div>
               <div className="flex-1">
                 <p className="text-sm font-medium">Complétez votre vérification</p>
                 <Progress value={profileCompletion()} className="h-2 mt-1" />
               </div>
-              <Badge variant="outline" className="text-amber-600 border-amber-500/30">
+              <Badge variant="outline" className="text-warning border-warning/30">
                 {profileCompletion()}%
               </Badge>
             </div>
@@ -254,13 +254,14 @@ const WalkerDashboardPage = () => {
         </Card>
       )}
 
-      {/* Stats Grid */}
+      {/* Stats Grid - Couleurs vives pour navigation intuitive */}
       <div className="grid grid-cols-2 gap-3">
         <StatCard 
           icon={Euro} 
           value={`${stats.monthlyEarnings.toFixed(0)}€`} 
           label="Gains ce mois"
           variant="money"
+          size="md"
           trend={stats.completedThisMonth > 0 ? { value: 12, isPositive: true } : undefined}
           onClick={() => setCurrentTab('earnings')}
         />
@@ -269,6 +270,7 @@ const WalkerDashboardPage = () => {
           value={stats.upcomingMissions} 
           label="Missions à venir"
           variant="walker"
+          size="md"
           onClick={() => setCurrentTab('missions')}
         />
         <StatCard 
@@ -276,6 +278,7 @@ const WalkerDashboardPage = () => {
           value={stats.averageRating.toFixed(1)} 
           label={`${stats.totalReviews} avis`}
           variant="warning"
+          size="md"
           onClick={() => setCurrentTab('performance')}
         />
         <StatCard 
@@ -283,14 +286,15 @@ const WalkerDashboardPage = () => {
           value={stats.totalWalks} 
           label="Balades totales"
           variant="success"
+          size="md"
           onClick={() => setCurrentTab('performance')}
         />
       </div>
 
-      {/* Quick Actions */}
+      {/* Quick Actions - Boutons colorés interactifs */}
       <div>
-        <h3 className="text-sm font-semibold text-muted-foreground mb-3">ACTIONS RAPIDES</h3>
-        <div className="grid grid-cols-4 gap-2">
+        <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">Actions rapides</h3>
+        <div className="grid grid-cols-4 gap-3">
           <QuickActionCard 
             icon={Clock} 
             label="Dispo" 
