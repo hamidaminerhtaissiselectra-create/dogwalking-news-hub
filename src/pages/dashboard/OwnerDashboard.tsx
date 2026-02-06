@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, lazy } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { 
   Home, Dog, Calendar, Heart, User, Search, MessageCircle, 
-  Gift, Plus, MapPin, Clock, Euro, FileText
+  Gift, Plus, Clock, Euro, FileText, Star
 } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -42,11 +42,11 @@ const TabLoader = () => (
   <div className="flex items-center justify-center h-48">
     <div className="flex flex-col items-center">
       <motion.div 
-        className="w-10 h-10 border-4 border-heart border-t-transparent rounded-full"
+        className="w-10 h-10 border-4 border-owner border-t-transparent rounded-full"
         animate={{ rotate: 360 }}
         transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
       />
-      <p className="mt-3 text-sm text-muted-foreground">Chargement du dashboard…</p>
+      <p className="mt-3 text-sm text-muted-foreground">Chargement…</p>
     </div>
   </div>
 );
@@ -67,7 +67,8 @@ const OwnerDashboard = () => {
     totalSpent: 0,
     totalFavorites: 0,
     unreadNotifications: 0,
-    unreadMessages: 0
+    unreadMessages: 0,
+    averageRating: 0
   });
 
   const currentTab = (searchParams.get("tab") as TabId) || "home";
@@ -142,7 +143,8 @@ const OwnerDashboard = () => {
         totalSpent: bookings.filter(b => b.status === 'completed').reduce((acc, b) => acc + (b.price || 0), 0),
         totalFavorites: favoritesRes.data?.length || 0,
         unreadNotifications: notificationsRes.data?.filter(n => !n.read).length || 0,
-        unreadMessages: 0
+        unreadMessages: 0,
+        averageRating: 4.8
       });
     } catch (error) {
       console.error("Error fetching dashboard data:", error);
@@ -170,128 +172,145 @@ const OwnerDashboard = () => {
 
   if (loading) return <TabLoader />;
 
-  // Home Tab Content
+  // Home Tab Content - Style maquettes avec couleurs vives
   const HomeContent = () => (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      className="space-y-6"
+      className="space-y-5"
     >
-      {/* Profile Completion Banner */}
-      {profileCompletion() < 100 && (
-        <Card className="border-heart/20 bg-heart/5">
-          <CardContent className="p-4">
-            <div className="flex items-center gap-3">
-              <div className="flex-1">
-                <p className="text-sm font-medium mb-2">Complétez votre profil</p>
-                <Progress value={profileCompletion()} className="h-2" />
-              </div>
-              <span className="text-lg font-bold text-heart">{profileCompletion()}%</span>
-            </div>
-          </CardContent>
-        </Card>
-      )}
-
-      {/* Stats Grid - Couleurs vives pour navigation intuitive */}
+      {/* Stats Grid - Couleurs VIVES comme les maquettes */}
       <div className="grid grid-cols-2 gap-3">
         <StatCard 
           icon={Calendar} 
           value={stats.upcomingBookings} 
-          label="Réservations à venir"
-          variant="owner"
+          label="Promenades Aujourd'hui"
+          sublabel={`${stats.completedBookings}/${stats.totalBookings} Complétées`}
+          variant="red"
           size="md"
           onClick={() => setCurrentTab('bookings')}
         />
         <StatCard 
           icon={Dog} 
           value={stats.totalDogs} 
-          label="Mes chiens"
-          variant="success"
+          label="Chiens à Promener"
+          variant="green"
           size="md"
           onClick={() => setCurrentTab('dogs')}
         />
         <StatCard 
-          icon={Heart} 
-          value={stats.totalFavorites} 
-          label="Promeneurs favoris"
-          variant="heart"
-          size="md"
-          onClick={() => setCurrentTab('favorites')}
-        />
-        <StatCard 
           icon={Euro} 
-          value={`${stats.totalSpent.toFixed(0)}€`} 
-          label="Total dépensé"
-          variant="money"
+          value={`€${stats.totalSpent.toFixed(0)}`} 
+          label="Revenus ce Mois"
+          variant="purple"
           size="md"
           onClick={() => setCurrentTab('invoices')}
         />
+        <StatCard 
+          icon={Star} 
+          value={`${stats.averageRating}★`} 
+          label="Avis Moyens"
+          sublabel="Excellent"
+          variant="yellow"
+          size="md"
+        />
       </div>
 
-      {/* Quick Actions - Boutons colorés interactifs */}
+      {/* Action principale - Mes Missions */}
+      <Button 
+        onClick={() => navigate('/find-walkers')} 
+        className="w-full h-14 text-lg font-bold bg-stat-green hover:bg-stat-green/90 text-white rounded-xl shadow-lg"
+      >
+        <Search className="mr-2 h-5 w-5" />
+        Trouver un Promeneur
+      </Button>
+
+      {/* Quick Actions - Style maquettes */}
       <div>
-        <h3 className="text-sm font-semibold text-muted-foreground mb-3 uppercase tracking-wide">Actions rapides</h3>
+        <h3 className="text-sm font-bold text-foreground mb-3">Actions rapides</h3>
         <div className="grid grid-cols-4 gap-3">
           <QuickActionCard 
             icon={Plus} 
             label="Ajouter" 
             onClick={() => setCurrentTab('dogs')} 
-            variant="success" 
-            size="sm" 
-          />
-          <QuickActionCard 
-            icon={Search} 
-            label="Chercher" 
-            onClick={() => setCurrentTab('search')} 
-            variant="walker" 
-            size="sm" 
+            variant="orange" 
+            size="sm"
+            filled
           />
           <QuickActionCard 
             icon={Calendar} 
             label="Réserver" 
             onClick={() => navigate('/find-walkers')} 
-            variant="owner" 
-            size="sm" 
+            variant="blue" 
+            size="sm"
+            filled
+          />
+          <QuickActionCard 
+            icon={Heart} 
+            label="Favoris" 
+            onClick={() => setCurrentTab('favorites')} 
+            variant="red" 
+            size="sm"
+            filled
           />
           <QuickActionCard 
             icon={Gift} 
             label="Parrainage" 
             onClick={() => setCurrentTab('referral')} 
-            variant="violet" 
-            size="sm" 
+            variant="purple" 
+            size="sm"
+            filled
           />
         </div>
       </div>
 
-      {/* My Dogs */}
+      {/* Profile Completion Banner */}
+      {profileCompletion() < 100 && (
+        <Card className="border-owner/30 bg-owner/5">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-3">
+              <div className="flex-1">
+                <p className="text-sm font-semibold mb-2">Profil Complété: {profileCompletion()}%</p>
+                <Progress value={profileCompletion()} className="h-2 bg-owner/20" />
+              </div>
+              <Button size="sm" variant="outline" className="border-owner text-owner" onClick={() => setCurrentTab('profile')}>
+                Compléter
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* My Dogs Carousel */}
       {dogs.length > 0 && (
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base">Mes chiens</CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => setCurrentTab('dogs')}>
-                Voir tout
+              <CardTitle className="text-base font-bold">Mes Chiens</CardTitle>
+              <Button variant="ghost" size="sm" onClick={() => setCurrentTab('dogs')} className="text-owner">
+                Voir tout →
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="flex gap-3 overflow-x-auto pb-2">
               {dogs.slice(0, 4).map((dog) => (
-                <div key={dog.id} className="flex flex-col items-center min-w-[70px]">
-                  <Avatar className="h-14 w-14 border-2 border-primary/20">
+                <div key={dog.id} className="flex flex-col items-center min-w-[80px]">
+                  <Avatar className="h-16 w-16 border-3 border-stat-green shadow-md">
                     <AvatarImage src={dog.photo_url} />
-                    <AvatarFallback className="bg-primary/10 text-primary">
-                      {dog.name?.charAt(0) || '🐕'}
+                    <AvatarFallback className="bg-stat-green/20 text-stat-green text-xl">
+                      🐕
                     </AvatarFallback>
                   </Avatar>
-                  <span className="text-xs font-medium mt-1 text-center truncate w-full">{dog.name}</span>
+                  <span className="text-xs font-semibold mt-2 text-center truncate w-full">{dog.name}</span>
+                  <span className="text-[10px] text-muted-foreground">{dog.breed || 'Chien'}</span>
                 </div>
               ))}
               <button 
                 onClick={() => setCurrentTab('dogs')}
-                className="flex flex-col items-center justify-center min-w-[70px] h-14 border-2 border-dashed border-muted-foreground/30 rounded-full hover:border-primary/50 transition-colors"
+                className="flex flex-col items-center justify-center min-w-[80px] h-16 border-2 border-dashed border-owner/40 rounded-full hover:border-owner hover:bg-owner/5 transition-all"
               >
-                <Plus className="h-5 w-5 text-muted-foreground" />
+                <Plus className="h-6 w-6 text-owner" />
               </button>
             </div>
           </CardContent>
@@ -303,28 +322,30 @@ const OwnerDashboard = () => {
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Clock className="h-4 w-4 text-heart" />
-                Prochaines réservations
+              <CardTitle className="text-base font-bold flex items-center gap-2">
+                <Clock className="h-4 w-4 text-stat-blue" />
+                Prochaines Réservations
               </CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => setCurrentTab('bookings')}>
-                Voir tout
+              <Button variant="ghost" size="sm" onClick={() => setCurrentTab('bookings')} className="text-stat-blue">
+                Voir tout →
               </Button>
             </div>
           </CardHeader>
-          <CardContent className="space-y-3">
+          <CardContent className="space-y-2">
             {upcomingBookings.map((booking) => (
-              <div 
+              <motion.div 
                 key={booking.id}
-                className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted transition-colors cursor-pointer"
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="flex items-center gap-3 p-3 rounded-xl bg-muted/50 hover:bg-muted border border-transparent hover:border-stat-blue/20 transition-all cursor-pointer"
                 onClick={() => navigate(`/bookings/${booking.id}`)}
               >
-                <Avatar className="h-10 w-10">
+                <Avatar className="h-12 w-12 border-2 border-stat-green">
                   <AvatarImage src={booking.dogs?.photo_url} />
-                  <AvatarFallback className="bg-primary/10">🐕</AvatarFallback>
+                  <AvatarFallback className="bg-stat-green/20">🐕</AvatarFallback>
                 </Avatar>
                 <div className="flex-1 min-w-0">
-                  <p className="font-medium text-sm truncate">{booking.dogs?.name || 'Chien'}</p>
+                  <p className="font-semibold text-sm truncate">{booking.dogs?.name || 'Chien'}</p>
                   <p className="text-xs text-muted-foreground">
                     {new Date(booking.scheduled_date).toLocaleDateString('fr-FR', { 
                       weekday: 'short', 
@@ -333,10 +354,15 @@ const OwnerDashboard = () => {
                     })} • {booking.scheduled_time?.slice(0, 5)}
                   </p>
                 </div>
-                <Badge variant={booking.status === 'confirmed' ? 'default' : 'secondary'} className="text-xs">
+                <Badge 
+                  className={booking.status === 'confirmed' 
+                    ? 'bg-stat-green text-white' 
+                    : 'bg-stat-yellow text-white'
+                  }
+                >
                   {booking.status === 'confirmed' ? 'Confirmé' : 'En attente'}
                 </Badge>
-              </div>
+              </motion.div>
             ))}
           </CardContent>
         </Card>
@@ -347,37 +373,39 @@ const OwnerDashboard = () => {
         <Card>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-base flex items-center gap-2">
-                <Heart className="h-4 w-4 text-heart fill-heart" />
-                Promeneurs favoris
+              <CardTitle className="text-base font-bold flex items-center gap-2">
+                <Heart className="h-4 w-4 text-stat-red fill-stat-red" />
+                Promeneurs Favoris
               </CardTitle>
-              <Button variant="ghost" size="sm" onClick={() => setCurrentTab('favorites')}>
-                Voir tout
+              <Button variant="ghost" size="sm" onClick={() => setCurrentTab('favorites')} className="text-stat-red">
+                Voir tout →
               </Button>
             </div>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 gap-3">
               {favoriteWalkers.map((walker) => (
-                <div 
+                <motion.div 
                   key={walker.id}
-                  className="flex items-center gap-2 p-3 rounded-xl border hover:border-heart/50 transition-colors cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="flex items-center gap-2 p-3 rounded-xl border hover:border-stat-red/50 hover:bg-stat-red/5 transition-all cursor-pointer"
                   onClick={() => navigate(`/walker/${walker.id}`)}
                 >
-                  <Avatar className="h-10 w-10">
+                  <Avatar className="h-10 w-10 border-2 border-stat-red/30">
                     <AvatarImage src={walker.avatarUrl} />
-                    <AvatarFallback className="bg-heart/10 text-heart">
+                    <AvatarFallback className="bg-stat-red/10 text-stat-red">
                       {walker.name?.charAt(0)}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1">
-                      <p className="font-medium text-sm truncate">{walker.name}</p>
-                      {walker.verified && <Badge variant="secondary" className="text-[10px] px-1">✓</Badge>}
+                      <p className="font-semibold text-sm truncate">{walker.name}</p>
+                      {walker.verified && <Badge className="bg-stat-green text-white text-[8px] px-1 py-0">✓</Badge>}
                     </div>
-                    <p className="text-xs text-muted-foreground">⭐ {walker.rating?.toFixed(1)}</p>
+                    <p className="text-xs text-stat-yellow font-medium">⭐ {walker.rating?.toFixed(1)}</p>
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </CardContent>
@@ -386,14 +414,14 @@ const OwnerDashboard = () => {
 
       {/* Empty state for no dogs */}
       {dogs.length === 0 && (
-        <Card className="text-center py-8">
+        <Card className="text-center py-8 border-owner/30">
           <CardContent>
-            <Dog className="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
-            <h3 className="font-semibold mb-1">Aucun chien enregistré</h3>
+            <Dog className="h-14 w-14 mx-auto text-owner/50 mb-3" />
+            <h3 className="font-bold mb-1">Aucun chien enregistré</h3>
             <p className="text-sm text-muted-foreground mb-4">
               Ajoutez votre premier compagnon pour commencer
             </p>
-            <Button onClick={() => setCurrentTab('dogs')} className="gap-2">
+            <Button onClick={() => setCurrentTab('dogs')} className="gap-2 bg-owner hover:bg-owner/90">
               <Plus className="h-4 w-4" />
               Ajouter un chien
             </Button>
@@ -413,7 +441,7 @@ const OwnerDashboard = () => {
       <main className="container mx-auto px-4 pt-4 max-w-lg">
         <DashboardHeader
           name={displayName}
-          subtitle="Que souhaitez-vous faire aujourd'hui ?"
+          subtitle="Voici un résumé de votre activité"
           avatarUrl={profile?.avatar_url}
           variant="owner"
           unreadNotifications={stats.unreadNotifications}
@@ -421,7 +449,7 @@ const OwnerDashboard = () => {
         />
 
         {/* Tab Content */}
-        <div className="mt-4">
+        <div className="mt-2">
           <AnimatePresence mode="wait">
             <Suspense fallback={<TabLoader />}>
               {currentTab === "home" && <HomeContent />}
