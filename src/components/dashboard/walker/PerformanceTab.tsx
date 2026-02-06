@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { PerformanceStats } from "@/components/dashboard/PerformanceStats";
 
 interface PerformanceTabProps {
-  stats: { averageRating: number; totalReviews: number; totalWalks: number; completedThisMonth: number; };
+  stats: { averageRating: number; totalReviews: number; totalWalks: number; completedThisMonth?: number; completedThisWeek?: number; };
 }
 
 const WalkerPerformanceTab = ({ stats }: PerformanceTabProps) => {
@@ -24,7 +24,7 @@ const WalkerPerformanceTab = ({ stats }: PerformanceTabProps) => {
         completionRate={98}
         repeatClientRate={35}
         totalWalks={stats.totalWalks}
-        walksThisMonth={stats.completedThisMonth}
+        walksThisMonth={stats.completedThisMonth || stats.completedThisWeek || 0}
         badges={[]}
       />
 

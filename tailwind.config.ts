@@ -28,31 +28,37 @@ export default {
           DEFAULT: "hsl(var(--heart))",
           light: "hsl(var(--heart-light))",
         },
-        // Vivid Dashboard Colors
+        // Dashboard Theme Colors
         walker: {
           DEFAULT: "hsl(var(--walker-blue))",
           light: "hsl(var(--walker-blue-light))",
+          navy: "hsl(var(--walker-navy))",
         },
         owner: {
-          DEFAULT: "hsl(var(--owner-rose))",
-          light: "hsl(var(--owner-rose-light))",
+          DEFAULT: "hsl(var(--owner-orange))",
+          light: "hsl(var(--owner-orange-light))",
+          coral: "hsl(var(--owner-coral))",
         },
-        success: {
-          DEFAULT: "hsl(var(--success-green))",
-          light: "hsl(var(--success-green-light))",
+        // Stat Card Colors (vivid, distinct)
+        stat: {
+          red: "hsl(var(--stat-red))",
+          "red-light": "hsl(var(--stat-red-light))",
+          green: "hsl(var(--stat-green))",
+          "green-light": "hsl(var(--stat-green-light))",
+          blue: "hsl(var(--stat-blue))",
+          "blue-light": "hsl(var(--stat-blue-light))",
+          yellow: "hsl(var(--stat-yellow))",
+          "yellow-light": "hsl(var(--stat-yellow-light))",
+          purple: "hsl(var(--stat-purple))",
+          "purple-light": "hsl(var(--stat-purple-light))",
+          cyan: "hsl(var(--stat-cyan))",
+          "cyan-light": "hsl(var(--stat-cyan-light))",
         },
-        warning: {
-          DEFAULT: "hsl(var(--warning-amber))",
-          light: "hsl(var(--warning-amber-light))",
-        },
-        info: {
-          DEFAULT: "hsl(var(--info-cyan))",
-          light: "hsl(var(--info-cyan-light))",
-        },
-        violet: {
-          DEFAULT: "hsl(var(--violet))",
-          light: "hsl(var(--violet-light))",
-        },
+        // Legacy aliases
+        success: "hsl(var(--stat-green))",
+        warning: "hsl(var(--stat-yellow))",
+        info: "hsl(var(--stat-cyan))",
+        violet: "hsl(var(--stat-purple))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

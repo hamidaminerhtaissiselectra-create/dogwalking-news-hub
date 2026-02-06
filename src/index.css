@@ -48,28 +48,58 @@ All colors MUST be HSL.
     --heart: 350 89% 60%;
     --heart-light: 350 89% 90%;
 
-    /* Dashboard Vivid Colors */
+    /* === DASHBOARD COLOR SYSTEM - INSPIRED BY MAQUETTES === */
+    
+    /* Owner Theme: Orange / Coral (warm, friendly) */
+    --owner-orange: 24 95% 53%;
+    --owner-orange-light: 24 95% 95%;
+    --owner-coral: 16 85% 60%;
+    --owner-coral-light: 16 85% 92%;
+    
+    /* Walker Theme: Blue / Gradient (professional, trustworthy) */
     --walker-blue: 217 91% 60%;
     --walker-blue-light: 217 91% 93%;
-    --owner-rose: 338 76% 58%;
-    --owner-rose-light: 338 76% 93%;
-    --success-green: 142 71% 45%;
-    --success-green-light: 142 71% 93%;
-    --warning-amber: 38 92% 50%;
-    --warning-amber-light: 38 92% 93%;
-    --info-cyan: 189 94% 43%;
-    --info-cyan-light: 189 94% 93%;
-    --violet: 262 83% 58%;
-    --violet-light: 262 83% 93%;
+    --walker-navy: 220 70% 35%;
+    --walker-gradient-end: 240 60% 55%;
+    
+    /* Stat Cards: Vivid & Distinct Colors */
+    --stat-red: 0 72% 51%;
+    --stat-red-light: 0 72% 94%;
+    --stat-green: 142 71% 45%;
+    --stat-green-light: 142 71% 93%;
+    --stat-blue: 210 100% 50%;
+    --stat-blue-light: 210 100% 94%;
+    --stat-yellow: 45 93% 47%;
+    --stat-yellow-light: 45 93% 92%;
+    --stat-purple: 262 83% 58%;
+    --stat-purple-light: 262 83% 93%;
+    --stat-cyan: 189 94% 43%;
+    --stat-cyan-light: 189 94% 93%;
+    
+    /* Action Buttons: High Contrast */
+    --action-accept: 142 76% 36%;
+    --action-refuse: 0 84% 60%;
+    --action-warning: 38 92% 50%;
+    
+    /* Legacy aliases for compatibility */
+    --walker: var(--walker-blue);
+    --owner: var(--owner-orange);
+    --success: var(--stat-green);
+    --warning: var(--stat-yellow);
+    --info: var(--stat-cyan);
+    --violet: var(--stat-purple);
+    --money: var(--stat-yellow);
 
     /* Gradients */
     --gradient-primary: linear-gradient(135deg, hsl(var(--sage-green)), hsl(var(--ocean-blue)));
     --gradient-hero: linear-gradient(135deg, hsl(var(--sage-green)) 0%, hsl(var(--ocean-blue)) 100%);
     --gradient-card: linear-gradient(145deg, hsl(var(--background)) 0%, hsl(var(--warm-beige)) 100%);
-    --gradient-walker: linear-gradient(135deg, hsl(var(--walker-blue)), hsl(var(--info-cyan)));
-    --gradient-owner: linear-gradient(135deg, hsl(var(--owner-rose)), hsl(var(--heart)));
-    --gradient-success: linear-gradient(135deg, hsl(var(--success-green)), hsl(var(--sage-green)));
-    --gradient-money: linear-gradient(135deg, hsl(var(--warning-amber)), hsl(38 92% 60%));
+    
+    /* Dashboard-specific gradients */
+    --gradient-walker: linear-gradient(135deg, hsl(var(--walker-navy)) 0%, hsl(var(--walker-gradient-end)) 100%);
+    --gradient-owner: linear-gradient(135deg, hsl(var(--owner-orange)), hsl(var(--owner-coral)));
+    --gradient-success: linear-gradient(135deg, hsl(var(--stat-green)), hsl(var(--sage-green)));
+    --gradient-money: linear-gradient(135deg, hsl(var(--stat-yellow)), hsl(38 92% 60%));
 
     /* Shadows */
     --shadow-soft: 0 4px 20px -2px hsl(var(--sage-green) / 0.1);
@@ -80,19 +110,12 @@ All colors MUST be HSL.
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
 
@@ -171,6 +194,34 @@ All colors MUST be HSL.
 
 .glow-accent {
   box-shadow: 0 0 30px hsl(var(--accent) / 0.3);
+}
+
+/* Dashboard stat cards with solid background colors */
+.stat-card-red {
+  background: linear-gradient(135deg, hsl(var(--stat-red)) 0%, hsl(0 72% 45%) 100%);
+}
+.stat-card-green {
+  background: linear-gradient(135deg, hsl(var(--stat-green)) 0%, hsl(142 71% 38%) 100%);
+}
+.stat-card-blue {
+  background: linear-gradient(135deg, hsl(var(--stat-blue)) 0%, hsl(217 91% 45%) 100%);
+}
+.stat-card-yellow {
+  background: linear-gradient(135deg, hsl(var(--stat-yellow)) 0%, hsl(45 93% 40%) 100%);
+}
+.stat-card-purple {
+  background: linear-gradient(135deg, hsl(var(--stat-purple)) 0%, hsl(262 83% 50%) 100%);
+}
+.stat-card-orange {
+  background: linear-gradient(135deg, hsl(var(--owner-orange)) 0%, hsl(var(--owner-coral)) 100%);
+}
+.stat-card-cyan {
+  background: linear-gradient(135deg, hsl(var(--stat-cyan)) 0%, hsl(189 94% 35%) 100%);
+}
+
+/* Walker dashboard header gradient */
+.walker-header-gradient {
+  background: linear-gradient(135deg, hsl(var(--walker-navy)) 0%, hsl(var(--walker-gradient-end)) 100%);
 }
 
 @layer base {
