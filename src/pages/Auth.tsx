@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "@/hooks/use-toast";
-import { ArrowLeft, Shield, Dog, CheckCircle, Star, User, Heart } from 'lucide-react';
+import { ArrowLeft, Shield, Dog, CheckCircle, Star, Heart } from 'lucide-react';
 import { supabase } from "@/integrations/supabase/client";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
@@ -42,9 +42,8 @@ const Auth = () => {
   const defaultTab = searchParams.get('type') === 'owner' ? 'register' : 'login';
   const redirectUrl = searchParams.get('redirect');
   
-  // User type selection for registration
+  // User type selection for BOTH login and registration
   const [selectedUserType, setSelectedUserType] = useState<UserType | null>(null);
-  const [showUserTypeSelection, setShowUserTypeSelection] = useState(true);
   
   // Role choice dialog for user_type=both
   const [showRoleChoice, setShowRoleChoice] = useState(false);
@@ -103,9 +102,18 @@ const Auth = () => {
     }
   };
 
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!selectedUserType) {
+      toast({
+        title: "Choisissez votre espace",
+        description: "Veuillez sélectionner si vous êtes propriétaire ou promeneur",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoading(true);
     
     const formData = new FormData(e.target as HTMLFormElement);
@@ -131,7 +139,13 @@ const Auth = () => {
         title: "Connexion réussie",
         description: "Bienvenue sur DogWalking !",
       });
-      await handlePostAuthRedirect();
+      
+      // Redirect based on selected user type
+      if (selectedUserType === 'walker') {
+        navigate('/walker/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     }
   };
 
@@ -196,17 +210,35 @@ const Auth = () => {
         title: "Inscription réussie !",
         description: `Bienvenue sur DogWalking en tant que ${selectedUserType === 'owner' ? 'propriétaire' : 'promeneur'} !`,
       });
-      await handlePostAuthRedirect();
+      
+      // Redirect based on selected user type
+      if (selectedUserType === 'walker') {
+        navigate('/walker/dashboard');
+      } else {
+        navigate('/dashboard');
+      }
     }
   };
 
   const handleSocialLogin = async (provider: 'google' | 'apple') => {
+    if (!selectedUserType) {
+      toast({
+        title: "Choisissez votre espace",
+        description: "Veuillez d'abord sélectionner si vous êtes propriétaire ou promeneur",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     setLoading(true);
     
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
+        queryParams: {
+          user_type: selectedUserType
+        }
       }
     });
 
@@ -226,20 +258,31 @@ const Auth = () => {
     { icon: Star, text: "Preuves photo obligatoires" },
   ];
 
+  // Profile type cards with vivid colors
   const userTypeCards = [
     {
       type: 'owner' as UserType,
       icon: Heart,
       title: "Je suis propriétaire",
       description: "Je cherche quelqu'un pour promener ou garder mon chien",
-      color: "heart"
+      bgColor: "bg-gradient-to-br from-heart/10 to-heart/5",
+      borderColor: "border-heart/30",
+      iconBg: "bg-heart/20",
+      iconColor: "text-heart",
+      selectedBg: "bg-gradient-to-br from-heart/20 to-heart/10",
+      selectedBorder: "border-heart"
     },
     {
       type: 'walker' as UserType,
       icon: Dog,
       title: "Je suis promeneur",
       description: "Je souhaite proposer mes services de promenade ou garde",
-      color: "primary"
+      bgColor: "bg-gradient-to-br from-stat-green/10 to-stat-green/5",
+      borderColor: "border-stat-green/30",
+      iconBg: "bg-stat-green/20",
+      iconColor: "text-stat-green",
+      selectedBg: "bg-gradient-to-br from-stat-green/20 to-stat-green/10",
+      selectedBorder: "border-stat-green"
     }
   ];
 
@@ -248,322 +291,288 @@ const Auth = () => {
       <RoleChoiceDialog open={showRoleChoice} onChoice={handleRoleChoice} />
       <div className="min-h-screen flex">
         {/* Left side - Image & Benefits */}
-      <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
-        <img 
-          src={heroImage} 
-          alt="Promenade de chien" 
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30" />
-        <div className="absolute inset-0 flex flex-col justify-center px-12">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <Badge className="mb-4 bg-white/20 text-white border-white/30">
-              Plateforme #1 en France
-            </Badge>
-            <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
-              Rejoignez la communauté DogWalking
-            </h1>
-            <p className="text-lg text-white/80 mb-8 max-w-md">
-              Des milliers de propriétaires font confiance à nos promeneurs vérifiés pour prendre soin de leurs compagnons.
-            </p>
-            
-            <div className="space-y-4">
-              {benefits.map((benefit, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                  className="flex items-center gap-3 text-white"
-                >
-                  <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                    <benefit.icon className="h-5 w-5" />
-                  </div>
-                  <span className="font-medium">{benefit.text}</span>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Right side - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-background">
-        <motion.div 
-          className="w-full max-w-md"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Button 
-            variant="ghost" 
-            className="mb-6"
-            onClick={() => navigate('/')}
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Retour à l'accueil
-          </Button>
-
-          {/* Pending booking notice */}
-          {getSafeSessionStorage().getItem('pendingBooking') && (
+        <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden">
+          <img 
+            src={heroImage} 
+            alt="Promenade de chien" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-black/30" />
+          <div className="absolute inset-0 flex flex-col justify-center px-12">
             <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-4 bg-primary/10 rounded-xl border border-primary/20"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
             >
-              <div className="flex items-center gap-3">
-                <Dog className="h-6 w-6 text-primary" />
-                <div>
-                  <p className="font-medium text-sm">Réservation en attente</p>
-                  <p className="text-xs text-muted-foreground">Connectez-vous pour finaliser votre réservation</p>
-                </div>
+              <Badge className="mb-4 bg-white/20 text-white border-white/30">
+                Plateforme #1 en France
+              </Badge>
+              <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4">
+                Rejoignez la communauté DogWalking
+              </h1>
+              <p className="text-lg text-white/80 mb-8 max-w-md">
+                Des milliers de propriétaires font confiance à nos promeneurs vérifiés pour prendre soin de leurs compagnons.
+              </p>
+              
+              <div className="space-y-4">
+                {benefits.map((benefit, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                    className="flex items-center gap-3 text-white"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
+                      <benefit.icon className="h-5 w-5" />
+                    </div>
+                    <span className="font-medium">{benefit.text}</span>
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
-          )}
+          </div>
+        </div>
 
-          <Card className="border-0 shadow-xl">
-            <CardHeader className="text-center pb-2">
-              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Dog className="h-8 w-8 text-primary" />
-              </div>
-              <CardTitle className="text-2xl">Bienvenue sur DogWalking</CardTitle>
-              <CardDescription>
-                Connectez-vous ou créez un compte pour continuer
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {/* Social Login Buttons */}
-              <div className="space-y-3 mb-6">
-                <Button 
-                  variant="outline" 
-                  className="w-full h-12 gap-3 text-base font-medium"
-                  onClick={() => handleSocialLogin('google')}
-                  disabled={loading}
-                >
-                  <GoogleIcon />
-                  Continuer avec Google
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full h-12 gap-3 text-base font-medium"
-                  onClick={() => handleSocialLogin('apple')}
-                  disabled={loading}
-                >
-                  <AppleIcon />
-                  Continuer avec Apple
-                </Button>
-              </div>
+        {/* Right side - Form */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-6 bg-background overflow-y-auto">
+          <motion.div 
+            className="w-full max-w-md"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <Button 
+              variant="ghost" 
+              className="mb-4"
+              onClick={() => navigate('/')}
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Retour à l'accueil
+            </Button>
 
-              <div className="relative mb-6">
-                <Separator />
-                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-xs text-muted-foreground">
-                  ou avec email
-                </span>
-              </div>
+            {/* Pending booking notice */}
+            {getSafeSessionStorage().getItem('pendingBooking') && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="mb-4 p-3 bg-primary/10 rounded-xl border border-primary/20"
+              >
+                <div className="flex items-center gap-3">
+                  <Dog className="h-5 w-5 text-primary" />
+                  <div>
+                    <p className="font-medium text-sm">Réservation en attente</p>
+                    <p className="text-xs text-muted-foreground">Connectez-vous pour finaliser</p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
 
-              <Tabs defaultValue={defaultTab}>
-                <TabsList className="grid w-full grid-cols-2 mb-6">
-                  <TabsTrigger value="login">Connexion</TabsTrigger>
-                  <TabsTrigger value="register">Inscription</TabsTrigger>
-                </TabsList>
+            <Card className="border-0 shadow-xl">
+              <CardHeader className="text-center pb-2">
+                <div className="w-14 h-14 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                  <Dog className="h-7 w-7 text-primary" />
+                </div>
+                <CardTitle className="text-xl">Bienvenue sur DogWalking</CardTitle>
+                <CardDescription className="text-sm">
+                  Connectez-vous ou créez un compte pour continuer
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="pt-0">
+                {/* Social Login Buttons */}
+                <div className="space-y-2 mb-4">
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-11 gap-3 text-sm font-medium"
+                    onClick={() => handleSocialLogin('google')}
+                    disabled={loading}
+                  >
+                    <GoogleIcon />
+                    Continuer avec Google
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full h-11 gap-3 text-sm font-medium"
+                    onClick={() => handleSocialLogin('apple')}
+                    disabled={loading}
+                  >
+                    <AppleIcon />
+                    Continuer avec Apple
+                  </Button>
+                </div>
 
-                <TabsContent value="login">
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    <div>
-                      <Label htmlFor="email">Email</Label>
-                      <Input 
-                        id="email" 
-                        name="email" 
-                        type="email" 
-                        placeholder="votre@email.com" 
-                        required 
-                        className="mt-1"
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="password">Mot de passe</Label>
-                      <Input 
-                        id="password" 
-                        name="password" 
-                        type="password" 
-                        required 
-                        className="mt-1"
-                      />
-                    </div>
-                    <Button type="submit" className="w-full h-12 text-base" disabled={loading}>
-                      {loading ? 'Connexion...' : 'Se connecter'}
-                    </Button>
-                  </form>
-                </TabsContent>
+                <div className="relative mb-4">
+                  <Separator />
+                  <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-background px-3 text-xs text-muted-foreground">
+                    ou avec email
+                  </span>
+                </div>
 
-                <TabsContent value="register">
-                  {/* User Type Selection */}
-                  <AnimatePresence mode="wait">
-                    {showUserTypeSelection && !selectedUserType ? (
-                      <motion.div
-                        key="user-type-selection"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        className="space-y-4"
-                      >
-                        <p className="text-sm text-center text-muted-foreground mb-4">
-                          Choisissez votre type de compte
-                        </p>
-                        <div className="grid gap-3">
-                          {userTypeCards.map((card) => (
-                            <motion.button
-                              key={card.type}
-                              type="button"
-                              whileHover={{ scale: 1.02 }}
-                              whileTap={{ scale: 0.98 }}
-                              onClick={() => {
-                                setSelectedUserType(card.type);
-                                setShowUserTypeSelection(false);
-                              }}
-                              className={`p-4 rounded-xl border-2 text-left transition-all ${
-                                card.type === 'owner' 
-                                  ? 'hover:border-heart hover:bg-heart/5'
-                                  : 'hover:border-primary hover:bg-primary/5'
-                              } ${
-                                selectedUserType === card.type 
-                                  ? card.type === 'owner' 
-                                    ? 'border-heart bg-heart/5' 
-                                    : 'border-primary bg-primary/5'
-                                  : 'border-border'
-                              }`}
-                            >
-                              <div className="flex items-center gap-4">
-                                <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                                  card.type === 'owner' ? 'bg-heart/10' : 'bg-primary/10'
-                                }`}>
-                                  <card.icon className={`h-6 w-6 ${
-                                    card.type === 'owner' ? 'text-heart' : 'text-primary'
-                                  }`} />
-                                </div>
-                                <div>
-                                  <h3 className="font-semibold">{card.title}</h3>
-                                  <p className="text-sm text-muted-foreground">{card.description}</p>
-                                </div>
+                <Tabs defaultValue={defaultTab}>
+                  <TabsList className="grid w-full grid-cols-2 mb-4">
+                    <TabsTrigger value="login" className="text-sm">Connexion</TabsTrigger>
+                    <TabsTrigger value="register" className="text-sm">Inscription</TabsTrigger>
+                  </TabsList>
+
+                  {/* User Type Selection - SHARED for both tabs */}
+                  <div className="mb-4">
+                    <p className="text-sm font-medium text-center mb-3">
+                      Choisissez votre type de compte
+                    </p>
+                    <div className="grid gap-2">
+                      {userTypeCards.map((card) => (
+                        <motion.button
+                          key={card.type}
+                          type="button"
+                          whileHover={{ scale: 1.01 }}
+                          whileTap={{ scale: 0.99 }}
+                          onClick={() => setSelectedUserType(card.type)}
+                          className={`p-3 rounded-xl border-2 text-left transition-all ${
+                            selectedUserType === card.type 
+                              ? `${card.selectedBg} ${card.selectedBorder}` 
+                              : `${card.bgColor} ${card.borderColor} hover:border-opacity-60`
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${card.iconBg}`}>
+                              <card.icon className={`h-5 w-5 ${card.iconColor}`} />
+                            </div>
+                            <div>
+                              <h3 className="font-semibold text-sm">{card.title}</h3>
+                              <p className="text-xs text-muted-foreground">{card.description}</p>
+                            </div>
+                            {selectedUserType === card.type && (
+                              <div className={`ml-auto w-5 h-5 rounded-full flex items-center justify-center ${card.type === 'owner' ? 'bg-heart' : 'bg-stat-green'}`}>
+                                <CheckCircle className="h-3 w-3 text-white" />
                               </div>
-                            </motion.button>
-                          ))}
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="registration-form"
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                      >
-                        {/* Selected user type badge */}
-                        <div className="flex items-center justify-between mb-4">
-                          <Badge 
-                            variant="outline" 
-                            className={`${
-                              selectedUserType === 'owner' 
-                                ? 'border-heart text-heart bg-heart/5' 
-                                : 'border-primary text-primary bg-primary/5'
-                            }`}
-                          >
-                            {selectedUserType === 'owner' ? (
-                              <>
-                                <Heart className="h-3 w-3 mr-1 fill-heart" />
-                                Propriétaire
-                              </>
-                            ) : (
-                              <>
-                                <Dog className="h-3 w-3 mr-1" />
-                                Promeneur
-                              </>
                             )}
-                          </Badge>
-                          <Button 
-                            variant="ghost" 
-                            size="sm"
-                            onClick={() => {
-                              setSelectedUserType(null);
-                              setShowUserTypeSelection(true);
-                            }}
-                          >
-                            Changer
-                          </Button>
-                        </div>
+                          </div>
+                        </motion.button>
+                      ))}
+                    </div>
+                  </div>
 
-                        <form onSubmit={handleRegister} className="space-y-4">
-                          <div className="grid grid-cols-2 gap-4">
-                            <div>
-                              <Label htmlFor="firstName">Prénom</Label>
-                              <Input id="firstName" name="firstName" required className="mt-1" />
-                            </div>
-                            <div>
-                              <Label htmlFor="lastName">Nom</Label>
-                              <Input id="lastName" name="lastName" required className="mt-1" />
-                            </div>
-                          </div>
-                          <div>
-                            <Label htmlFor="email-register">Email</Label>
-                            <Input 
-                              id="email-register" 
-                              name="email" 
-                              type="email" 
-                              placeholder="votre@email.com" 
-                              required 
-                              className="mt-1"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="phone">Téléphone (optionnel)</Label>
-                            <Input 
-                              id="phone" 
-                              name="phone" 
-                              type="tel" 
-                              placeholder="06 12 34 56 78" 
-                              className="mt-1"
-                            />
-                          </div>
-                          <div>
-                            <Label htmlFor="password-register">Mot de passe</Label>
-                            <Input 
-                              id="password-register" 
-                              name="password" 
-                              type="password" 
-                              required 
-                              minLength={6} 
-                              className="mt-1"
-                              placeholder="6 caractères minimum"
-                            />
-                          </div>
-                          <Button 
-                            type="submit" 
-                            className={`w-full h-12 text-base ${
-                              selectedUserType === 'owner' ? 'bg-heart hover:bg-heart/90' : ''
-                            }`} 
-                            disabled={loading}
-                          >
-                            {loading ? 'Inscription...' : 'Créer mon compte'}
-                          </Button>
-                          <p className="text-xs text-center text-muted-foreground">
-                            En vous inscrivant, vous acceptez nos{" "}
-                            <a href="/cgu" className="text-primary hover:underline">CGU</a>
-                            {" "}et notre{" "}
-                            <a href="/confidentialite" className="text-primary hover:underline">politique de confidentialité</a>
-                          </p>
-                        </form>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+                  <TabsContent value="login" className="mt-0">
+                    <form onSubmit={handleLogin} className="space-y-3">
+                      <div>
+                        <Label htmlFor="login-email" className="text-sm">Email</Label>
+                        <Input 
+                          id="login-email" 
+                          name="email" 
+                          type="email" 
+                          placeholder="votre@email.com" 
+                          required 
+                          className="mt-1 h-10"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="login-password" className="text-sm">Mot de passe</Label>
+                        <Input 
+                          id="login-password" 
+                          name="password" 
+                          type="password" 
+                          required 
+                          className="mt-1 h-10"
+                        />
+                      </div>
+                      <Button 
+                        type="submit" 
+                        className={`w-full h-11 text-base font-semibold ${
+                          selectedUserType === 'owner' 
+                            ? 'bg-heart hover:bg-heart/90' 
+                            : selectedUserType === 'walker' 
+                              ? 'bg-stat-green hover:bg-stat-green/90' 
+                              : 'bg-primary hover:bg-primary/90'
+                        }`}
+                        disabled={loading || !selectedUserType}
+                      >
+                        {loading ? 'Connexion...' : 'Se connecter'}
+                      </Button>
+                    </form>
+                  </TabsContent>
+
+                  <TabsContent value="register" className="mt-0">
+                    <form onSubmit={handleRegister} className="space-y-3">
+                      <div className="grid grid-cols-2 gap-2">
+                        <div>
+                          <Label htmlFor="firstName" className="text-sm">Prénom</Label>
+                          <Input 
+                            id="firstName" 
+                            name="firstName" 
+                            placeholder="Jean" 
+                            required 
+                            className="mt-1 h-10"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="lastName" className="text-sm">Nom</Label>
+                          <Input 
+                            id="lastName" 
+                            name="lastName" 
+                            placeholder="Dupont" 
+                            required 
+                            className="mt-1 h-10"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <Label htmlFor="register-email" className="text-sm">Email</Label>
+                        <Input 
+                          id="register-email" 
+                          name="email" 
+                          type="email" 
+                          placeholder="votre@email.com" 
+                          required 
+                          className="mt-1 h-10"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="phone" className="text-sm">Téléphone (optionnel)</Label>
+                        <Input 
+                          id="phone" 
+                          name="phone" 
+                          type="tel" 
+                          placeholder="06 12 34 56 78" 
+                          className="mt-1 h-10"
+                        />
+                      </div>
+                      <div>
+                        <Label htmlFor="register-password" className="text-sm">Mot de passe</Label>
+                        <Input 
+                          id="register-password" 
+                          name="password" 
+                          type="password" 
+                          placeholder="6 caractères minimum"
+                          required 
+                          className="mt-1 h-10"
+                        />
+                      </div>
+                      <Button 
+                        type="submit" 
+                        className={`w-full h-11 text-base font-semibold ${
+                          selectedUserType === 'owner' 
+                            ? 'bg-heart hover:bg-heart/90' 
+                            : selectedUserType === 'walker' 
+                              ? 'bg-stat-green hover:bg-stat-green/90' 
+                              : 'bg-primary hover:bg-primary/90'
+                        }`}
+                        disabled={loading || !selectedUserType}
+                      >
+                        {loading ? 'Inscription...' : "Créer mon compte"}
+                      </Button>
+                      <p className="text-xs text-center text-muted-foreground pt-1">
+                        En vous inscrivant, vous acceptez nos{' '}
+                        <a href="/cgu" className="text-primary underline">CGU</a>
+                        {' '}et notre{' '}
+                        <a href="/confidentialite" className="text-primary underline">politique de confidentialité</a>
+                      </p>
+                    </form>
+                  </TabsContent>
+                </Tabs>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
       </div>
     </>
   );

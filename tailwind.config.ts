@@ -33,6 +33,7 @@ export default {
           DEFAULT: "hsl(var(--walker-blue))",
           light: "hsl(var(--walker-blue-light))",
           navy: "hsl(var(--walker-navy))",
+          violet: "hsl(var(--walker-violet))",
         },
         owner: {
           DEFAULT: "hsl(var(--owner-orange))",
