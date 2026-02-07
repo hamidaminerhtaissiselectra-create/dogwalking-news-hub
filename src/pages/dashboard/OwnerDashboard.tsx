@@ -172,49 +172,69 @@ const OwnerDashboard = () => {
 
   if (loading) return <TabLoader />;
 
-  // Home Tab Content - Style maquettes avec couleurs vives
+  // Home Tab Content - Style maquettes avec couleurs vives et animations
   const HomeContent = () => (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ staggerChildren: 0.1 }}
       className="space-y-5"
     >
-      {/* Stats Grid - Couleurs VIVES comme les maquettes */}
-      <div className="grid grid-cols-2 gap-3">
-        <StatCard 
-          icon={Calendar} 
-          value={stats.upcomingBookings} 
-          label="Promenades Aujourd'hui"
-          sublabel={`${stats.completedBookings}/${stats.totalBookings} Complétées`}
-          variant="red"
-          size="md"
-          onClick={() => setCurrentTab('bookings')}
-        />
-        <StatCard 
-          icon={Dog} 
-          value={stats.totalDogs} 
-          label="Chiens à Promener"
-          variant="green"
-          size="md"
-          onClick={() => setCurrentTab('dogs')}
-        />
-        <StatCard 
-          icon={Euro} 
-          value={`€${stats.totalSpent.toFixed(0)}`} 
-          label="Revenus ce Mois"
-          variant="purple"
-          size="md"
-          onClick={() => setCurrentTab('invoices')}
-        />
-        <StatCard 
-          icon={Star} 
-          value={`${stats.averageRating}★`} 
-          label="Avis Moyens"
-          sublabel="Excellent"
-          variant="yellow"
-          size="md"
-        />
-      </div>
+      {/* Stats Grid - Couleurs VIVES comme les maquettes avec stagger animation */}
+      <motion.div 
+        className="grid grid-cols-2 gap-3"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { 
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+          }
+        }}
+      >
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Calendar} 
+            value={stats.upcomingBookings} 
+            label="Promenades Aujourd'hui"
+            sublabel={`${stats.completedBookings}/${stats.totalBookings} Complétées`}
+            variant="red"
+            size="md"
+            onClick={() => setCurrentTab('bookings')}
+          />
+        </motion.div>
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Dog} 
+            value={stats.totalDogs} 
+            label="Chiens à Promener"
+            variant="green"
+            size="md"
+            onClick={() => setCurrentTab('dogs')}
+          />
+        </motion.div>
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Euro} 
+            value={`€${stats.totalSpent.toFixed(0)}`} 
+            label="Dépenses ce Mois"
+            variant="purple"
+            size="md"
+            onClick={() => setCurrentTab('invoices')}
+          />
+        </motion.div>
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Star} 
+            value={`${stats.averageRating}★`} 
+            label="Avis Moyens"
+            sublabel="Excellent"
+            variant="yellow"
+            size="md"
+          />
+        </motion.div>
+      </motion.div>
 
       {/* Action principale - Mes Missions */}
       <Button 

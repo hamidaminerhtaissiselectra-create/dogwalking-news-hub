@@ -246,52 +246,72 @@ const WalkerDashboardPage = () => {
 
   if (loading) return <TabLoader />;
 
-  // Home Tab Content - Style maquettes avec couleurs vives
+  // Home Tab Content - Style maquettes avec couleurs vives et animations
   const HomeContent = () => (
     <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ staggerChildren: 0.1 }}
       className="space-y-5"
     >
-      {/* Stats Grid - 4 cartes colorées comme la maquette Walker Dashboard */}
-      <div className="grid grid-cols-2 gap-3">
-        <StatCard 
-          icon={Euro} 
-          value={`€${stats.monthlyEarnings.toFixed(2)}`} 
-          label="Gains"
-          sublabel="Ce mois-ci"
-          variant="red"
-          size="md"
-          onClick={() => setCurrentTab('earnings')}
-        />
-        <StatCard 
-          icon={Calendar} 
-          value={stats.completedThisWeek} 
-          label="Promenades"
-          sublabel="Cette semaine"
-          variant="green"
-          size="md"
-          onClick={() => setCurrentTab('missions')}
-        />
-        <StatCard 
-          icon={Clock} 
-          value={`${stats.hoursThisMonth}h`} 
-          label="Heures Marchées"
-          sublabel="Ce mois-ci"
-          variant="blue"
-          size="md"
-          onClick={() => setCurrentTab('performance')}
-        />
-        <StatCard 
-          icon={Star} 
-          value={`${Math.round(stats.acceptanceRate)}%`} 
-          label="Taux de Satisfaction"
-          sublabel="Excellent"
-          variant="yellow"
-          size="md"
-          onClick={() => setCurrentTab('performance')}
-        />
-      </div>
+      {/* Stats Grid - 4 cartes colorées comme la maquette Walker Dashboard avec stagger */}
+      <motion.div 
+        className="grid grid-cols-2 gap-3"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0 },
+          visible: { 
+            opacity: 1,
+            transition: { staggerChildren: 0.1 }
+          }
+        }}
+      >
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Euro} 
+            value={`€${stats.monthlyEarnings.toFixed(2)}`} 
+            label="Gains"
+            sublabel="Ce mois-ci"
+            variant="red"
+            size="md"
+            onClick={() => setCurrentTab('earnings')}
+          />
+        </motion.div>
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Calendar} 
+            value={stats.completedThisWeek} 
+            label="Promenades"
+            sublabel="Cette semaine"
+            variant="green"
+            size="md"
+            onClick={() => setCurrentTab('missions')}
+          />
+        </motion.div>
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Clock} 
+            value={`${stats.hoursThisMonth}h`} 
+            label="Heures Marchées"
+            sublabel="Ce mois-ci"
+            variant="blue"
+            size="md"
+            onClick={() => setCurrentTab('performance')}
+          />
+        </motion.div>
+        <motion.div variants={{ hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } }}>
+          <StatCard 
+            icon={Star} 
+            value={`${Math.round(stats.acceptanceRate)}%`} 
+            label="Taux de Satisfaction"
+            sublabel="Excellent"
+            variant="yellow"
+            size="md"
+            onClick={() => setCurrentTab('performance')}
+          />
+        </motion.div>
+      </motion.div>
 
       {/* Bouton principal - Mes Missions */}
       <Button 
