@@ -56,11 +56,12 @@ All colors MUST be HSL.
     --owner-coral: 16 85% 60%;
     --owner-coral-light: 16 85% 92%;
     
-    /* Walker Theme: Blue / Gradient (professional, trustworthy) */
+    /* Walker Theme: Blue / Violet Gradient (professional, modern) */
     --walker-blue: 217 91% 60%;
     --walker-blue-light: 217 91% 93%;
-    --walker-navy: 220 70% 35%;
-    --walker-gradient-end: 240 60% 55%;
+    --walker-navy: 235 60% 45%;
+    --walker-violet: 260 70% 55%;
+    --walker-gradient-end: 260 70% 60%;
     
     /* Stat Cards: Vivid & Distinct Colors */
     --stat-red: 0 72% 51%;
